@@ -6,46 +6,31 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 05:14:19 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/08/16 05:21:46 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/08/20 15:52:42 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	cd_cmd(char **args, t_list *data)
+int	cd_cmd(char **args)
 {
-	int		chdir_check;
-	char	*path;
-	char	*tmp;
+	char *new_path;
 
-	if (!args[1] || ((args[1][0] == '~' && ft_strlen(args[1]) == 1)))
-		return (set_path(data, "HOME"));
-	if (args[2])
+	new_path = getcwd(NULL,0);
+	if (args[1] == NULL || (args[1][0] == '~' && ft_strlen(args[1]) == 1))
+		new_path = getenv("HOME");
+	else if(args[1][0] == '/')
+		new_path = args[1];
+	else
 	{
-		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
-		return (1);
+		new_path = ft_strjoin(new_path,"/");
+		new_path = ft_strjoin(new_path,args[1]);
 	}
-	path = check_path(data, args[1]);
-	if (!path)
-		return (1);
-	tmp = getcwd(NULL, 0);
-	chdir_check = chdir(path);
-	if (chdir_check == 0)
+	if (chdir(new_path))
 	{
-		set_env(data->env, data, "OLDPWD", ft_strdup(tmp, data));
-		free(tmp);
-		update_env(data->env, data);
-		return(0);
+		write(2, "minishell: ", 11);
+		write(2, args[1], ft_strlen(args[1]));
+		write(2, ": No such file or directory\n", 28);
 	}
-	if (chdir_check == -1)
-	{
-		ft_putstr_fd("minishell: cd: no such  file or directory \n", 2);
-		free(tmp);
-		return(1);
-	}
-
-	// if (args[1][0] == '-' && args[1][1] == '\0')
-	// 	return (set_path(data, "OLDPWD"));
-
 	return (0);
 }

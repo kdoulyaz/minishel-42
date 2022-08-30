@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omeslall <omeslall@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 19:25:44 by omeslall          #+#    #+#             */
-/*   Updated: 2021/11/10 19:29:12 by omeslall         ###   ########.fr       */
+/*   Updated: 2022/08/28 23:37:02 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,3 @@ int	ft_isalpha(int c)
 	else
 		return (0);
 }
-
-// int main()
-// {
-//     printf("%d\n",ft_isalpha(' '));
-// }

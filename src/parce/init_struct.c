@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 20:45:36 by omeslall          #+#    #+#             */
-/*   Updated: 2022/08/15 19:30:22 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/08/29 22:53:41 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ t_list	*init_execution(char **envp)
 t_data	*init_data(char **envp)
 {
 	t_data *data;
-	
+	int		i;
+
+	i = 0;
 	data = malloc(sizeof(t_data));
 	data->args = NULL;
 	data->error = 0;
@@ -34,7 +36,13 @@ t_data	*init_data(char **envp)
 	data->n_infiles = 0;
 	data->outfiles = NULL;
 	data->append = NULL;
-	data->env = envp;
+	data->envp = create_envp(envp);
+	if (g_glob.g_exp == 0)
+	{
+		printf("---m-\n");
+		g_data.exp = creat_export(envp);
+		g_glob.g_exp = 1;
+	}
 	return (data);
 }
 

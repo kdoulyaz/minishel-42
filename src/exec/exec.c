@@ -6,135 +6,88 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 18:49:56 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/08/16 03:20:42 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/08/28 17:31:27 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../../include/minishell.h"
 
-void	cmd_err(char *cmd)
+void	ft_dup(int	fd, int	end)
 {
-	write(STDERR_FILENO, "minishell: error: command not found: ", 37);
-	write(STDERR_FILENO, cmd, ft_strlen(cmd));
-	write(STDERR_FILENO, "\n", 1);
-	exit(EXIT_FAILURE);
+	dup2(fd, end);
+	close(fd);
 }
 
-void	path_err(void)
+void	child_p(t_list *exec, int *p, int copy_fd, char **eenv)
 {
-	write(2, "path dosn't exist\n", 18);
-	exit(EXIT_FAILURE);
-}
+	int	fdout;
 
-char	*find_path(char *cmd, char **env)
-{
-	char	**paths;
-	char	*path;
-	char	*part_path;
-	int		i;
-
-	i = 0;
-	while (env[i] && ft_strnstr(env[i], "PATH=", 5) == 0)
-		i++;
-	if (!env[i])
-		path_err();
-	paths = ft_split(env[i] + 5, ':');
-	i = 0;
-	while (paths[i])
+	fdout = -1;
+	open_out(exec, &fdout);
+	close(p[0]);
+	if (exec->next)
+		ft_dup(p[1], 1);
+	if (fdout != -1)
+		ft_dup(fdout, 1);
+	if (bulitin(exec))
 	{
-		if (ft_strchr(cmd, '/'))
-			return (cmd);
-		part_path = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(part_path, cmd);
-		free(part_path);
-		if (access(path, X_OK) == 0)
-			return (path);
-		i++;
+		g_glob.g_exit_status = execute_bulitings(exec);
+		exit(1);
 	}
-	cmd_err(cmd);
-	return (NULL);
+	if (copy_fd != -1)
+		ft_dup(copy_fd, 0);
+	if(((t_data *)exec->content)->infiles)
+		ft_dup(((t_data *)exec->content)->infiles[((t_data *)exec->content)->n_infiles - 1], 0);
+	if (((t_data *)exec->content)->args && execve(find_path(((t_data *)exec->content)->args[0],\
+		eenv),((t_data *)exec->content)->args, eenv) == -1)
+		write(2, "sir t9ouwed\n", 12);
 }
-
-void	child_p(t_list *lst)
-{
-	if (((t_data *)lst->content)->inf)
-		printf("minishell: %s : No such file or directory\n", ((t_data *)lst->content)->inf);
-	if (execve(find_path(((t_data *)lst->content)->args[0], ((t_data *)lst->content)->env),\
-		((t_data *)lst->content)->args, ((t_data *)lst->content)->env) == -1)
-		printf("ydek 3llo\n");
-}
-int	redir_input(t_list *lst, int tmpin)
-{
-	int	fdin;
-
-	if(((t_data *)lst->content)->infiles)
-		fdin = ((t_data *)lst->content)->infiles[((t_data *)lst->content)->n_infiles - 1];
-	else
-		fdin = dup(tmpin);
-	return(fdin);
-}
-
-void	start_exec(t_list *exec)
+void	start_exec(t_list *exec, char **eenv)
 {
 	t_list	*lst;
+	pid_t	p[2];
 	int		tmpin;
 	int		tmpout;
-	int		fdin;
-	int		fdout;
-	int		i;
+	int		pid;
+	int		copy_fd;
 
 	lst = exec;
+	copy_fd = -1;
 	tmpin = dup(0);
 	tmpout = dup(1);
-	fdin = redir_input(lst, tmpin);
-	while(lst)
+	while(exec)
 	{
-		i = 0;
-		dup2(fdin, 0);
-		close(fdin);
-		if (lst->next)
+		pipe(p);
+		pid = fork();
+		if (pid == -1)
 		{
-			int	fdpipe[2];
-			pipe(fdpipe);
-			fdout = fdpipe[1];
-			fdin = fdpipe[0];
+			write(2, "bash: fork: Resource temporarily unavailable\n", 45);
+			break ;
 		}
-		if (((t_data *)lst->content)->outfiles || ((t_data *)lst->content)->append)
+		if (pid == 0)
 		{
-			if (((t_data *)lst->content)->outfiles)
+			if(((t_data *)exec->content)->inf)
 			{
-				while(((t_data *)lst->content)->outfiles[i])
-					fdout = open(((t_data *)lst->content)->outfiles[i++], O_WRONLY | O_CREAT |O_TRUNC ,0777);
-				dup2(fdout, 1);
-				close(fdout);
+				write(2, "minishell: ", 11);
+				write(2, ((t_data *)exec->content)->inf, ft_strlen(((t_data *)exec->content)->inf));
+				write(2, ": No such file or directory\n", 28);
+				exit(1);
 			}
-			else
-			{
-				while(((t_data *)lst->content)->append[i])
-					fdout = open(((t_data *)lst->content)->append[i++], O_WRONLY | O_CREAT |O_APPEND ,0777);
-				dup2(fdout, 1);
-				close(fdout);
-			}
+			child_p(exec, p, copy_fd, eenv);
 		}
-		else
-			fdout = dup(tmpout);
-		dup2(fdout, 1);
-		close(fdout);
-		i = fork();
-		if (i == 0)
-		{
-	close(fdin);
-			child_p(lst);
-		}
-		else
-		{
-			close(fdout);
-		}
-		lst = lst->next;
+		close(p[1]);
+		if (copy_fd != -1)
+			close(copy_fd);
+		copy_fd = p[0];
+		exec = exec->next;
 	}
 	dup2(tmpin, 0);
 	dup2(tmpout, 1);
 	close(tmpin);
 	close(tmpout);
-	waitpid(-1, NULL, 0);
+	while(lst)
+	{
+		wait(NULL);
+		lst = lst->next;
+	}
 }
