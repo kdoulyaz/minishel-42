@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: omeslall <omeslall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 17:57:52 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/08/23 00:07:45 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/08/29 15:58:31 by omeslall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	**add_env(char **strs, char *arg)
 	while (strs[++i])
 		args[i] = ft_strdup(strs[i]);
 	args[i] = ft_strdup(arg);
-	args[i + 1] = NULL;//free
+	args[i + 1] = NULL;//free strs
 	return (args);
 }
 

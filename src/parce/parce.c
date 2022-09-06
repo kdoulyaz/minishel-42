@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 21:46:55 by omeslall          #+#    #+#             */
-/*   Updated: 2022/08/29 22:32:17 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/06 16:38:04 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,6 @@ int	parse(char *line, char **envp)
 		token = get_next_token(lexer);
 	}
 	// printer(exec);
-	if (bulitin(exec) && !(t_data *)exec->next)
-		g_exit_status = execute_bulitings(exec);
-	else
-		start_exec(exec, envp);
+	start_exec(exec, envp);
 	return (g_exit_status); 
 }

@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 06:35:04 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/08/20 16:53:29 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/06 18:52:42 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,14 @@ char	*find_path(char *cmd, char **env)
 	return (NULL);
 }
 
+void	error_msg(char *str, int err)
+{
+	write(2, "minishell: ", 11);
+	write(2, str, ft_strlen(str));
+	ft_putstr_fd(": ", 2);
+	ft_putendl_fd(strerror(err), 2);
+}
+
 void	open_out(t_list *exec, int *fdout)
 {
 	int	i;
@@ -76,5 +84,12 @@ void	open_out(t_list *exec, int *fdout)
 				dup2(*fdout, 1);
 				close(*fdout);
 			}
+			if (*fdout == -1)
+			{
+				error_msg(((t_data *)exec->content)->outfiles[--i], errno);
+				exit(1);
+			}
 		}
+		// if (((t_data *)exec->content)->error == 1)
+		// 	exit(1);
 }

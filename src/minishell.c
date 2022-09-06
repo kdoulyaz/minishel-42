@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 16:50:37 by omeslall          #+#    #+#             */
-/*   Updated: 2022/08/29 22:32:09 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/06 03:48:05 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@ int main(int ac,char **av,char **envp)
 {
 	char *line;
 
-	g_glob.g_exp = 0;
 	if (!av || !envp)
 		return(0);
+	init_signal();
 	g_exit_status = 0;
+	g_glob.built = 0;
+	g_glob.g_exp = 0;
 	if (ac == 1)
 	{
 		while(1337)

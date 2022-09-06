@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 14:53:37 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/08/29 15:47:06 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/08/30 19:20:26 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*g_variable(char *str)
 	return (tmp);
 }
 
-char	*advanced_join(char *s1, char *s2)
+char	*ft_join(char *s1, char *s2)
 {
 	char	*str;
 	int		i;
@@ -79,15 +79,15 @@ char	**creat_export(char **env)
 	while (env[++i])
 	{
 		tmp = NULL;
-		tmp = advanced_join(tmp, "declare -x ");
+		tmp = ft_join(tmp, "declare -x ");
 		vtmp = g_variable(env[i]);
-		tmp = advanced_join(tmp, vtmp);
+		tmp = ft_join(tmp, vtmp);
 		free(vtmp);
-		tmp = advanced_join(tmp, "=\"");
+		tmp = ft_join(tmp, "=\"");
 		value = ft_strdup(env[i] + g_index(env[i], '=') + 1);
-		tmp = advanced_join(tmp, value);
+		tmp = ft_join(tmp, value);
 		free(value);
-		tmp = advanced_join(tmp, "\"");
+		tmp = ft_join(tmp, "\"");
 		export = add_env(export, tmp);
 		free(tmp);
 	}

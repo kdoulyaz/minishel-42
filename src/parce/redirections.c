@@ -6,11 +6,20 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 00:33:34 by omeslall          #+#    #+#             */
-/*   Updated: 2022/08/13 18:56:22 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/06 02:02:08 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../../include/minishell.h"
+
+void	parse_arg_redi(t_token *token,t_list *exec)
+{
+	char *arg;
+
+	arg = ft_strdup("");
+	if(check_qaout(token->value) || check_if_expand(token->value))
+			qaout_in_redi(token,exec,&arg,0);
+}
 
 void	fill_redirections(t_list *exec, t_token **token, t_lexer *lexer)
 {
@@ -18,6 +27,7 @@ void	fill_redirections(t_list *exec, t_token **token, t_lexer *lexer)
 	{
 		free_token(*token);
 		*token = get_next_token(lexer);
+		parse_arg_redi(*token,exec);
 		if((*token)->type == ARG && ((t_data *)exec->content)->error != 1)
 			fill_infile(exec, *token);
 		
@@ -26,6 +36,7 @@ void	fill_redirections(t_list *exec, t_token **token, t_lexer *lexer)
 	{
 		free_token(*token);
 		*token = get_next_token(lexer);
+		parse_arg_redi(*token,exec);
 		if((*token)->type == ARG && ((t_data *)exec->content)->error != 1)
 			fill_outfile(exec, *token);
 		else if((*token)->type == R_REDIRECTION )
@@ -36,6 +47,7 @@ void	fill_redirections(t_list *exec, t_token **token, t_lexer *lexer)
 		}
 	}
 }
+
 
 void	fill_infile(t_list *exec, t_token *token)
 {

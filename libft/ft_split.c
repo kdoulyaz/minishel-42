@@ -3,151 +3,102 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: skadi <skadi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: omeslall <omeslall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 19:21:14 by omeslall          #+#    #+#             */
-/*   Updated: 2022/06/16 18:55:35 by skadi            ###   ########.fr       */
+/*   Updated: 2022/08/30 19:23:01 by omeslall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"libft.h"
+#include<stdio.h>
 
-static int	count_words(char const *s, char c)
+static int	get_count(char const *s, char d)
 {
 	int	i;
 	int	count;
-	int	flag;
-	int	qout;
-	int type;
-    char temp;
 
-	qout = type = 0;
 	i = 0;
-	flag = 0;
 	count = 0;
 	while (s[i])
 	{
-		if (s[i] == '"' || s[i] == 39)
+		if (s[i] == d)
+			i++;
+		else
 		{
-			if(qout == 2)
-				qout = 0;
-			if(qout == 0)
-				temp = s[i];
-			if(qout == 0 || s[i] == temp)
-				qout++;
-		}
-		if(qout == 1 &&(s[i + 1] == '"' || s[i + 1] == 39) && s[i + 1] != temp)
-		{
-				flag = 1;
-				count++;
-		}
-		else if (s[i] != c && (flag == 0 || qout == 1))
-		{
-			flag = 1;
 			count++;
+			while (s[i] && s[i] != d)
+				i++;
 		}
-		else if (s[i] == c && (qout == 2 || qout == 0))
-		{
-			flag = 0;
-			qout = 0;
-			type = 0;
-		}
-		i++;
 	}
 	return (count);
 }
 
-static char	*word_in(char const *s, int start, int end)
+static char	*ft_word_cpy(char *word, char const *s, int j, int word_len)
 {
-	int		i;
-	int		size;
-	char	*word;
+	int	i;
 
 	i = 0;
-	size = end - start;
-	word = malloc((size + 1) * sizeof(char));
-	if (!word)
-		return (NULL);
-	while (start < end)
+	while (word_len > 0)
 	{
-		word[i] = s[start];
+		word[i] = s[j - word_len];
+		word_len--;
 		i++;
-		start++;
 	}
 	word[i] = '\0';
 	return (word);
 }
 
-static char	**memory(char const *s, char c)
+static char	**ft_split_free(char **str, int word_num)
 {
-	int		i;
-	int		size;
-	char	**array;
+	int	i;
 
 	i = 0;
-	size = count_words(s, c);
-	array = malloc((size + 1) * sizeof(char *));
-	if (!s[i] && !array)
-	{
-		free(array);
-		return (0);
-	}
-	return (array);
+	while (i < word_num)
+		free(str[i++]);
+	free(str);
+	return (NULL);
 }
 
-static char	**itre(char const *s, char c, char **array)
+static char	**ft_split2(char **str, char const *s, char c, int word_num)
 {
-	int		size;
-	int		i;
-	int		j;
-	int		k;
-	int		qout;
-	char	temp;
-	int		type;
+	int	i;
+	int	j;
+	int	word_len;
 
-	type = 0;
-	k = -1;
-	j = 0;
 	i = 0;
-	qout = 0;
-	size = ft_strlen(s);
-	while (i <= size)
+	j = 0;
+	while (s[j] && i < word_num)
 	{
-		if (s[i] == '"' || s[i] == 39)
+		word_len = 0;
+		while (s[j] && s[j] == c)
+			j++;
+		while (s[j] && s[j] != c)
 		{
-			if(qout == 2)
-				qout = 0;
-			if(qout == 0)
-				temp = s[i];
-			if(qout == 0 || s[i] == temp)
-				qout++;
-			
-		}
-		if(s[i] != c &&(qout == 1 &&(s[i + 1] == '"' || s[i + 1] == 39) && s[i + 1] != temp))
-			k = i;
-		if (s[i] != c && k < 0)
-			k = i;
-		else if ((s[i] == c || i == size) && k >= 0 && (qout == 0 || qout == 2))
-		{
-			array[j] = word_in(s, k, i);
-			k = -1;
-			qout = 0;
+			word_len++;
 			j++;
 		}
+		str[i] = (char *)malloc(sizeof(char) * (word_len + 1));
+		if (!str[i])
+			return (ft_split_free(str, i));
+		ft_word_cpy(str[i], s, j, word_len);
 		i++;
 	}
-	array[j] = NULL;
-	return (array);
+	str[i] = 0;
+	return (str);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**array;
+	char	**str;
+	int		word_num;
 
 	if (!s)
 		return (NULL);
-	array = memory(s, c);
-	if (!array)
+	word_num = get_count(s, c);
+	str = (char **)malloc(sizeof(char *) * (word_num + 1));
+	if (!str)
 		return (NULL);
-	return (itre(s, c, array));
+	ft_split2(str, s, c, word_num);
+	return (str);
 }

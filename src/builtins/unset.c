@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 18:09:59 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/08/29 18:50:20 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/05 19:49:34 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,6 @@ char	**ft_remove_element(char **env, int n)
 	return (new);
 }
 
-int	get_char_index(char *str, char c)
-{
-	int	i;
-
-	i = -1;
-	while (str[++i])
-		if (str[i] == c)
-			return (i);
-	return (0);
-}
-
 char	*get_variable_name(char *str)
 {
 	int		i;
@@ -55,18 +44,18 @@ char	*get_variable_name(char *str)
 	return (tmp);
 }
 
-void	unset_env(char *str, t_list *exec)
+void	unset_env(char *str)
 {
 	int		i;
 	char	*tmp;
 
 	i = -1;
-	while (((t_data *)exec->content)->envp[++i])
+	while (g_glob.envp[++i])
 	{
-		tmp = get_variable_name(((t_data *)exec->content)->envp[i]);
-		if (!ft_strncmp(tmp, str, ft_strlen(tmp)))
+		tmp = get_variable_name(g_glob.envp[i]);
+		if (!ft_strncmp(tmp, str, big_len(ft_strlen(tmp), ft_strlen(str))))
 		{
-			((t_data *)exec->content)->envp = ft_remove_element(((t_data *)exec->content)->envp, i--);
+			g_glob.envp = ft_remove_element(g_glob.envp, i--);
 			free(tmp);
 			break ;
 		}
@@ -74,38 +63,27 @@ void	unset_env(char *str, t_list *exec)
 	}
 }
 
-void	error_unset(char *name)
+void	unset_exp(char *str)
 {
-	ft_putstr_fd("minishell: unset: `", 2);
-	ft_putstr_fd(name, 2);
-	ft_putendl_fd("': not a valid identifier", 2);
-	g_glob.g_exit_status = 1;
-}
+	int		i;
+	char	*tmp;
 
-int	is_acceptable(char c)
-{
-	if (ft_isalpha(c) || ft_isdigit(c) || c == '_')
-		return (1);
-	return (0);
-}
-
-int	check_error(char *arg)
-{
-	int	i;
-
-	if (ft_isdigit(arg[0]))
-		return (1);
-	i = 1;
-	while (arg[i])
+	i = -1;
+	while (g_glob.exp[++i])
 	{
-		if (!is_acceptable(arg[i]))
-			return (1);
-		i++;
+		tmp = get_new_line(str, NULL);
+		if (!ft_strncmp(g_glob.exp[i], tmp,
+				get_index(g_glob.exp[i], '=')))
+		{
+			g_glob.exp = ft_remove_element(g_glob.exp, i--);
+			free(tmp);
+			break ;
+		}
+		free(tmp);
 	}
-	return (0);
 }
 
-int	unset_cmd(char **args, t_list *exec)
+int	unset_cmd(char **args)
 {
 	int		i;
 	char	**tmp;
@@ -119,7 +97,8 @@ int	unset_cmd(char **args, t_list *exec)
 			printf("minishell: unset: `%s': not a valid identifier\n", args[1]);
 			continue ;
 		}
-		unset_env(tmp[i], exec);
+		unset_env(tmp[i]);
+		unset_exp(tmp[i]);
 	}
     free(tmp);
     return (0);
