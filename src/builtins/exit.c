@@ -6,13 +6,11 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 10:32:24 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/08/21 22:43:54 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/20 00:43:34 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-int	g_exit_status;
 
 int	count_args(char **args)
 {
@@ -28,14 +26,14 @@ int	count_args(char **args)
 
 void	is_numeric(char **args)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 1;
 	j = 0;
 	while (args[i] != NULL)
 	{
-		while(args[1][j])
+		while (args[1][j])
 		{
 			if (args[1][j] != '0' && !ft_atoi(&args[1][j]))
 			{
@@ -43,7 +41,8 @@ void	is_numeric(char **args)
 				ft_putstr_fd("exit: ", 2);
 				ft_putstr_fd(args[1], 2);
 				ft_putstr_fd(": numeric argument required\n", 2);
-				exit(1);
+				g_glob.g_exit_status = 255;
+				exit(g_glob.g_exit_status);
 			}
 			j++;
 		}
@@ -53,13 +52,13 @@ void	is_numeric(char **args)
 
 int	exit_cmd(char **args)
 {
-	int len;
+	int	len;
 
 	len = count_args(args);
 	if (!args[1])
 	{
 		printf("exit\n");
-		exit(1);
+		exit(g_glob.g_exit_status);
 	}
 	is_numeric(args);
 	write(2, &len, 4);

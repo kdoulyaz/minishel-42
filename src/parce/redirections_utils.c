@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: omeslall <omeslall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 13:30:37 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/05 17:24:43 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/07 20:34:21 by omeslall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ void	qaout_in_redi(t_token *token,t_list *exec,char **arg,int i)
 	if((int)ft_strlen(value) <= i)
 	{
 		position_quote(value,1);
+		free(token->value);
 		token->value = ft_strdup(*arg);
+		free(value);
 		free(*arg);
 		return;
 	}
@@ -34,21 +36,20 @@ void	qaout_in_redi(t_token *token,t_list *exec,char **arg,int i)
 		single_quote(tmp,arg,0);
 	else if(check_qaout(tmp) == 2)
 		double_quote(exec,tmp,arg,0);
-	else if(check_if_expand(tmp))
+	else if(check_if_expand(tmp) && ((t_data *)(exec->content))->if_hd != 1)
 	{
 		tmp = ft_strjoin(*arg,tmp);
-		expand(tmp,arg);
+		expand(exec,tmp,arg);
 		expand_split(exec,*arg,1);
 		if(((t_data *)exec->content)->error == 3)
 		{
 			ft_putstr_fd("minishell: ",2);
-			ft_putstr_fd(token->value,2);
-			ft_putstr_fd(": ambiguous redirect\n",2);
-			((t_data *)exec->content)->error =  1;
+			ft_putstr_fd(value,2);
+			ft_putstr_fd(": ambiguous redirect \n",2);
 			free(tmp);
 			free(value);
 			free(*arg);
-			return ;
+			return;
 		}
 	}
 	else

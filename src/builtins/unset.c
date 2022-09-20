@@ -6,11 +6,22 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 18:09:59 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/05 19:49:34 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/20 00:35:09 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	free_loop(char **args)
+{
+	int	i;
+
+	i = -1;
+	while (args[++i])
+		free(args[i]);
+	free(args);
+}
+
 
 char	**ft_remove_element(char **env, int n)
 {
@@ -25,7 +36,7 @@ char	**ft_remove_element(char **env, int n)
 		if (i != n)
 			new[++j] = ft_strdup(env[i]);
 	new[j + 1] = NULL;
-	// free_loop(env);
+	free_loop(env);
 	return (new);
 }
 
@@ -72,8 +83,8 @@ void	unset_exp(char *str)
 	while (g_glob.exp[++i])
 	{
 		tmp = get_new_line(str, NULL);
-		if (!ft_strncmp(g_glob.exp[i], tmp,
-				get_index(g_glob.exp[i], '=')))
+		if (!ft_strncmp(g_glob.exp[i], tmp, \
+		big_len(get_index(g_glob.exp[i], '='), get_index(tmp, '='))))
 		{
 			g_glob.exp = ft_remove_element(g_glob.exp, i--);
 			free(tmp);
@@ -100,6 +111,6 @@ int	unset_cmd(char **args)
 		unset_env(tmp[i]);
 		unset_exp(tmp[i]);
 	}
-    free(tmp);
+	
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 16:50:37 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/06 03:48:05 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/18 05:50:11 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,36 @@
 
 int	g_exit_status;
 
-int main(int ac,char **av,char **envp)
+void	initialiser(void)
 {
-	char *line;
-
-	if (!av || !envp)
-		return(0);
 	init_signal();
 	g_exit_status = 0;
 	g_glob.built = 0;
 	g_glob.g_exp = 0;
+	g_glob.signal_heredoc = 0;
+	g_glob.breaker = 0;
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	char	*line;
+
+	if (!av || !envp)
+		return (0);
+	initialiser();
 	if (ac == 1)
 	{
-		while(1337)
+		while (1337)
 		{
 			line = readline("minishell:");
 			if (!line)
-				break;
+				break ;
 			if (line && *line)
 				add_history (line);
-			if(*line)
+			if (*line)
 				parse(line, envp);
+			free(line);
 		}
 	}
-	return(g_exit_status);
+	return (g_exit_status);
 }

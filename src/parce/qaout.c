@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:59:02 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/06 02:07:32 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/16 22:44:58 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	position_quote_d(char *s,int f)
 void	double_quote(t_list *exec,char *value,char **arg,int i)
 {
 	char	*tmp;
+	char	*tmp1;
 	int		j;
 	int   	q;
 	
@@ -75,14 +76,11 @@ void	double_quote(t_list *exec,char *value,char **arg,int i)
 			return;
 		}
 	tmp = ft_substr(value,i,j);
-	if(check_if_expand(tmp))
+	if(check_if_expand(tmp) && ((t_data *)(exec->content))->if_hd != 1)
 	{
-		expand(tmp,&tmp);
-		// if(check_qaout(tmp) == 1)
-		// {
-		// }
-		// else
-		// 	expand(exec,tmp,&tmp);
+		tmp1 = tmp;
+		expand(exec,tmp,&tmp);
+		free(tmp1);
 	}
 	*arg = ft_strjoin(*arg,tmp);
 	free(tmp);
@@ -93,6 +91,8 @@ void	qaout(t_list *exec, char *value, char **arg, int i)
 {
 	int		j;
 	char	*tmp;
+	char 	*tmp1;
+	int		len;
 	j = 0;
 	if((int)ft_strlen(value) <= i)
 	{
@@ -107,13 +107,24 @@ void	qaout(t_list *exec, char *value, char **arg, int i)
 		double_quote(exec,tmp,arg,0);
 	else if(check_if_expand(tmp))
 	{
+		tmp1 = tmp;
 		tmp = ft_strjoin(*arg,tmp);
-		expand(tmp,arg);
+		free(tmp1);
+		expand(exec,tmp,arg);
 		expand_split(exec,*arg,0);
+		// free(tmp);
+		// printf("********************************************\n");
+		len =  len_2d_array((void **)(((t_data *)exec->content)->args));
 		free(*arg);
-		*arg = ft_strdup("");
-		// free(*arg);
-		// *arg = ft_strdup("");
+		if(len > 0)
+		{
+			*arg = ft_strdup(((t_data *)exec->content)->args[len - 1]);
+			free(((t_data *)exec->content)->args[len]);
+			free(((t_data *)exec->content)->args[len - 1]);
+			((t_data *)exec->content)->args[len - 1] = NULL;
+		}
+		else
+			*arg = ft_strdup("");
 	}
 	else
 		*arg = ft_strjoin(*arg,tmp);

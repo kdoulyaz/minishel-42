@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/07 00:16:18 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/07 00:53:17 by kdoulyaz         ###   ########.fr       */
+/*   Created: 2022/09/15 16:15:07 by kdoulyaz          #+#    #+#             */
+/*   Updated: 2022/09/17 15:26:18 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ void	ft_dup(int fd, int end)
 	close(fd);
 }
 
-void	waiting(int tmpin, int tmpout, t_list *lst)
+void	waiting(t_list *lst)
 {
-	dup2(tmpin, 0);
-	dup2(tmpout, 1);
-	close(tmpin);
-	close(tmpout);
-	while(lst)
+	dup2(g_glob.tmpin, 0);
+	dup2(g_glob.tmpout, 1);
+	close(g_glob.tmpin);
+	close(g_glob.tmpout);
+	while (lst)
 	{
 		wait(NULL);
 		lst = lst->next;
@@ -53,4 +53,3 @@ int	err_inf(t_list *exec)
 	}
 	return (0);
 }
-

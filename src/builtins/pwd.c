@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 04:56:15 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/06 22:35:57 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/06 16:55:27 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	pwd_cmd(void)
 		else
 		{
 			s = getcwd(NULL, 0);
-			printf("{%s}\n", s);
+			printf("%s\n", s);
 			free(s);
 			break;
 		}

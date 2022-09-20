@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 20:45:36 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/06 03:44:44 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/15 16:52:57 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ t_data	*init_data(char **envp)
 	data->n_infiles = 0;
 	data->outfiles = NULL;
 	data->append = NULL;
+	data->hd = NULL;
+	data->if_hd = 0;
 	if (g_glob.g_env == 0)
 	{
 		g_glob.envp = create_envp(envp);

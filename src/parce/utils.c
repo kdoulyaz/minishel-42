@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 14:53:37 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/08/30 19:20:26 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/20 00:03:12 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,35 @@ char	*ft_join(char *s1, char *s2)
 	while (s2[++j])
 		str[i + j] = s2[j];
 	str[i + j] = '\0';
+	return (str);
+}
+
+char	*ft_join1(char *s1, char *s2)
+{
+	char	*str;
+	int		i;
+	int		j;
+
+	if (!s1)
+		s1 = ft_calloc(1, sizeof(char));
+	if (!s2)
+	{
+		str = ft_strdup(s1);
+		free(s1);
+		return (str);
+	}
+	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!str)
+		return (NULL);
+	i = -1;
+	while (s1[++i])
+		str[i] = s1[i];
+	j = -1;
+	while (s2[++j])
+		str[i + j] = s2[j];
+	str[i + j] = '\0';
 	free(s1);
+	free(s2);
 	return (str);
 }
 

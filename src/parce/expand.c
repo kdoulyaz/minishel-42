@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 09:59:48 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/06 02:06:23 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/16 23:08:57 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	next_expand(char *s)
 	return (i);
 }
 
-void	expand(char *value,char **arg)
+void	expand(t_list *exec,char *value,char **arg)
 {
 	int		i;
 	char	*tmp;
@@ -58,6 +58,8 @@ void	expand(char *value,char **arg)
 	char	*c;
 	int 	j;
 
+	// if(((t_data *)(exec->content))->if_hd != 1)
+	// 	return;
 	j = 0;
 	tmp = ft_strdup("");
 	c = ft_strdup(" ");
@@ -67,7 +69,7 @@ void	expand(char *value,char **arg)
 		if(value[i] == '$' && is_white_space(value[i + 1]) == 0)
 			{
 				j = next_expand(&value[i]) + i;
-				tmp1 = fill_expand(ft_substr(value,i + 1,j));
+				tmp1 = fill_expand(exec,ft_substr(value,i + 1,j));
 				if(tmp1)
 				{
 					tmp =ft_strjoin(tmp ,tmp1);
@@ -84,22 +86,31 @@ void	expand(char *value,char **arg)
 		i++;
 	}
 	*arg = ft_strdup(tmp);
+	free(c);
 	free(tmp);
 }
 
-char	*fill_expand(char *value)
+char	*fill_expand(t_list *exec,char *value)
 {
 	int i;
-
+	int	len;
+	// char *tmp;
+	
+	
 	i = -1;
+
+	(void)exec;
 	value = ft_strjoin(value,"=");
 	while (g_glob.envp[++i])
 	{
 		if(ft_strncmp(g_glob.envp[i],value,ft_strlen(value)) == 0)
 		{
-			value = ft_strdup(g_glob.envp[i] + ft_strlen(value));
+			len = ft_strlen(value);
+			free(value);
+			value = ft_strdup(g_glob.envp[i] + len);
 			return(value);
 		}
 	}
+	free(value);
 	return (NULL);	
 }
