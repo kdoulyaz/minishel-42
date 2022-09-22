@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 06:35:04 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/19 23:30:22 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/22 16:18:44 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,6 @@ void	cmd_err(char *cmd)
 	write(STDERR_FILENO, "minishell: ", 11);
 	write(STDERR_FILENO, cmd, ft_strlen(cmd));
 	write(STDERR_FILENO, ": command not found\n", 20);
-}
-
-void	path_err(void)
-{
-	write(2, "path dosn't exist\n", 18);
-	exit(1);
 }
 
 char	*find_path(char *cmd, char **env)
@@ -53,76 +47,84 @@ char	*find_path(char *cmd, char **env)
 	exit(1);
 }
 
-void	error_msg(char *str, int err)
+int	err_out(t_list *exec, int mode, int mode1, int i)
 {
-	write(2, "minishell: ", 11);
-	write(2, str, ft_strlen(str));
-	ft_putstr_fd(": ", 2);
-	ft_putendl_fd(strerror(err), 2);
-}
-
-void	open_out(t_list *exec, int *fdout)
-{
-	int	i;
-
-	i = 0;
-	if (((t_data *)exec->content)->outfiles || ((t_data *)exec->content)->append)
+	if (mode == 0)
+	{
+		if (g_glob.fdout == -1)
 		{
 			if (((t_data *)exec->content)->outfiles)
-			{
-				while(((t_data *)exec->content)->outfiles[i])
-					*fdout = open(((t_data *)exec->content)->outfiles[i++], O_WRONLY | O_CREAT |O_TRUNC ,0777);
-				dup2(*fdout, 1);
-				close(*fdout);
-			}
-			else
-			{
-				while(((t_data *)exec->content)->append[i])
-					*fdout = open(((t_data *)exec->content)->append[i++], O_WRONLY | O_CREAT |O_APPEND ,0777);
-				dup2(*fdout, 1);
-				close(*fdout);
-			}
-			if (*fdout == -1)
-			{
-				error_msg(((t_data *)exec->content)->outfiles[--i], errno);
+				error_msg(((t_data *)exec->content)->outfiles[i], errno);
+			else if (((t_data *)exec->content)->append)
+				error_msg(((t_data *)exec->content)->append[i], errno);
+			if (mode1 == 0)
 				exit(1);
-			}
+			else
+				return (1);
 		}
+	}
+	else
+	{
 		if (((t_data *)exec->content)->error == 1)
-			exit(1);
+		{
+			if (mode1 == 0)
+				exit(1);
+			else
+				return (1);
+		}
+	}
+	return (0);
 }
 
-int	open_out1(t_list *exec, int *fdout)
+void	open_out(t_list *exec, int i)
 {
-	int	i;
-
-	i = 0;
-	if (((t_data *)exec->content)->outfiles || ((t_data *)exec->content)->append)
+	if (((t_data *)exec->content)->outfiles
+		|| ((t_data *)exec->content)->append)
 	{
 		if (((t_data *)exec->content)->outfiles)
 		{
 			while (((t_data *)exec->content)->outfiles[i])
-				*fdout = open(((t_data *)exec->content)->outfiles[i++], O_WRONLY | O_CREAT |O_TRUNC ,0777);
-			dup2(*fdout, 1);
-			close(*fdout);
+				g_glob.fdout = open(((t_data *)exec->content)->outfiles[i++],
+						O_WRONLY | O_CREAT | O_TRUNC, 0777);
+			dup2(g_glob.fdout, 1);
+			close(g_glob.fdout);
 		}
-		else
+		if (((t_data *)exec->content)->append)
 		{
+			i = 0;
 			while (((t_data *)exec->content)->append[i])
-				*fdout = open(((t_data *)exec->content)->append[i++], O_WRONLY | O_CREAT |O_APPEND ,0777);
-			dup2(*fdout, 1);
-			close(*fdout);
+				g_glob.fdout = open(((t_data *)exec->content)->append[i++],
+						O_WRONLY | O_CREAT | O_APPEND, 0777);
+			dup2(g_glob.fdout, 1);
+			close(g_glob.fdout);
 		}
-		if (*fdout == -1)
-		{
-			if (((t_data *)exec->content)->outfiles)
-				error_msg(((t_data *)exec->content)->outfiles[--i], errno);
-			else
-				error_msg(((t_data *)exec->content)->append[--i], errno);
-			return (1);
-		}
+		err_out(exec, 0, 0, i - 1);
 	}
-	if (((t_data *)exec->content)->error == 1)
+	err_out(exec, 1, 0, i - 1);
+}
+
+int	open_out1(t_list *exec, int i)
+{
+	if (((t_data *)exec->content)->outfiles)
+	{
+		while (((t_data *)exec->content)->outfiles[i])
+			g_glob.fdout = open(((t_data *)exec->content)->outfiles[i++],
+					O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		dup2(g_glob.fdout, 1);
+		close(g_glob.fdout);
+	}
+	if (((t_data *)exec->content)->append)
+	{
+		i = 0;
+		while (((t_data *)exec->content)->append[i])
+			g_glob.fdout = open(((t_data *)exec->content)->append[i++],
+					O_WRONLY | O_CREAT | O_APPEND, 0777);
+		dup2(g_glob.fdout, 1);
+		close(g_glob.fdout);
+	}
+	if (err_out(exec, 0, 1, i - 1) == 1)
+		return (1);
+	if (err_out(exec, 1, 1, i - 1) == 1)
 		return (1);
 	return (0);
 }

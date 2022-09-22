@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 21:49:19 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/17 03:47:41 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/21 23:24:24 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ t_list		*ft_lstlast(t_list *lst);
 t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 t_list		*ft_lstnew(void *content);
 int			ft_lstsize(t_list *lst);
-char	*ft_substr2(char const *s, unsigned int start, size_t len);
+char		*ft_substr2(char const *s, unsigned int start, size_t len);
+char		*ft_strdup2(const char *s, int i);
 
 #endif

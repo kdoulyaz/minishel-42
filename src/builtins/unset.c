@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 18:09:59 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/20 00:35:09 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/22 17:47:35 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	free_loop(char **args)
 		free(args[i]);
 	free(args);
 }
-
 
 char	**ft_remove_element(char **env, int n)
 {
@@ -40,27 +39,14 @@ char	**ft_remove_element(char **env, int n)
 	return (new);
 }
 
-char	*get_variable_name(char *str)
-{
-	int		i;
-	char	*tmp;
-
-	i = -1;
-	tmp = malloc(sizeof(char) * get_char_index(str, '=') + 1);
-	if (!tmp)
-		return (NULL);
-	while (++i < get_char_index(str, '='))
-		tmp[i] = str[i];
-	tmp[i] = 0;
-	return (tmp);
-}
-
 void	unset_env(char *str)
 {
 	int		i;
 	char	*tmp;
 
 	i = -1;
+	if (!ft_strncmp(str, "HOME", 4))
+		g_glob.h_flag = 1;
 	while (g_glob.envp[++i])
 	{
 		tmp = get_variable_name(g_glob.envp[i]);
@@ -111,6 +97,5 @@ int	unset_cmd(char **args)
 		unset_env(tmp[i]);
 		unset_exp(tmp[i]);
 	}
-	
-    return (0);
+	return (0);
 }

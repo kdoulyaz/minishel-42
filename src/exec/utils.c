@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 16:15:07 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/17 15:26:18 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/21 19:59:41 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,14 @@ void	waiting(t_list *lst)
 		lst = lst->next;
 	}
 	init_signal();
+}
+
+void	initialise(void)
+{
+	g_glob.copy_fd = -1;
+	g_glob.tmpin = dup(0);
+	g_glob.tmpout = dup(1);
+	g_glob.g_child = 0;
 }
 
 int	err_inf(t_list *exec)

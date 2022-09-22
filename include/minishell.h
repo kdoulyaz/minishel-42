@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 16:51:19 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/20 00:04:08 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/22 18:00:33 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,19 @@ typedef struct s_glob
 	int		g_exit_status;
 	int		g_child;
 	int		g_exp;
+	int		h_flag;
 	int		g_env;
 	char	**envp;
 	int		built;
+	int		i;
 	char	**exp;
+	char		*newpwd;
 	int		signal_heredoc;
 	int		signalchild;
-	int		breaker;
+	int		stop;
 	int		signalqiut;
 	int		pid;
+	int		fdout;
 	int		lst_size;
 	int		tmpin;
 	int		tmpout;
@@ -121,12 +125,15 @@ void	fill_outfile(t_list *exec, t_token *token);
 void	fill_append(t_list *exec, t_token *token);
 int		handle_errors(char *argv);
 int		check_if_expand(char *s);
-void	expand(t_list *exec, char *value, char **arg);
-char	*fill_expand(t_list *exec, char *value);
+void	expand(char *value, char **arg);
+char	*fill_expand(char *value);
 void	expand_split(t_list *exec, char *arg, int f);
 void	qaout_in_redi(t_token *token, t_list *exec, char **arg, int i);
 void	parse_arg_redi(t_token *token, t_list *exec);
 void	free_exec(t_list *exec);
+int		red_error(int *i, int *j, char *argv);
+char	quotes_exist(char *argv, size_t *i);
+
 //-----------------------------------------------------
 // int		bulitin(t_list *exec);
 // void	error_export(char *name);
@@ -149,13 +156,13 @@ void	free_exec(t_list *exec);
 
 int		bulitin(t_list *exec);
 int		pwd_cmd(void);
-int		execute_bulitings(t_list *exec);
+int		execute_bulitings(t_list *exec, int mode);
 int		cd_cmd(char **args);
 void	start_exec(t_list *exec);
 void	cmd_err(char *cmd);
 void	path_err(void);
 char	*find_path(char *cmd, char **env);
-void	open_out(t_list *exec, int *fdout);
+void	open_out(t_list *exec, int i);
 int		echo_cmd(char **args);
 int		exit_cmd(char **args);
 int		count_args(char **args);
@@ -189,7 +196,14 @@ int		child_bulitin(t_list *exec);
 int		child_execute_bulitings(t_list *exec);
 void	piping(pid_t *p);
 int		err_inf(t_list *exec);
-int		open_out1(t_list *exec, int *fdout);
+int		open_out1(t_list *exec, int i);
 char	*ft_join1(char *s1, char *s2);
+void	norm(t_list *exec, int *p, int copy_fd);
+void	ree(t_list *exec);
+int		err_fork(void);
+void	initialise(void);
+void	*ft_getenv(char *str);
+void	error_msg(char *str, int err);
+void	getcwd_error(int err, char *path);
 
 #endif

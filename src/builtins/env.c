@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 10:06:01 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/06 03:47:17 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/21 19:07:30 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	env_cmd(t_list *exec)
 		exit(1);
 	}
 	else
-		while(g_glob.envp[++i])
+		while (g_glob.envp[++i])
 			printf("%s\n", g_glob.envp[i]);
 	return (0);
 }

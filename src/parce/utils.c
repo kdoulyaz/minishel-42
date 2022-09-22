@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 14:53:37 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/20 00:03:12 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/20 20:04:30 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ char	**creat_export(char **env)
 	char	*tmp;
 	char	*vtmp;
 	char	*value;
-    char    **export;
+	char	**export;
 
 	i = -1;
 	export = ft_calloc(1, sizeof(char *));
@@ -119,5 +119,5 @@ char	**creat_export(char **env)
 		export = add_env(export, tmp);
 		free(tmp);
 	}
-    return (export);
+	return (export);
 }

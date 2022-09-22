@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 04:56:15 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/06 16:55:27 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/22 17:47:03 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int	pwd_cmd(void)
 {
 	int		i;
+	char	*s;
 
 	i = -1;
-	char *s;
 	while (g_glob.envp[++i])
 	{
 		if (!ft_strncmp(g_glob.envp[i], "PWD=", 4))
@@ -33,7 +33,7 @@ int	pwd_cmd(void)
 			s = getcwd(NULL, 0);
 			printf("%s\n", s);
 			free(s);
-			break;
+			break ;
 		}
 	}
 	return (0);

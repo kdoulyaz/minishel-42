@@ -6,84 +6,84 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 21:46:55 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/19 23:11:17 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/22 18:04:19 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../../include/minishell.h"
 
-void	printer(t_list *exec)
-{
-	int i;
-	i = 0;
-	while (exec)
-	{	
-		printf("========================================================================================\n\n");
+// void	printer(t_list *exec)
+// {
+// 	int i;
+// 	i = 0;
+// 	while (exec)
+// 	{	
+// 		printf("========================================================================================\n\n");
 
-		if(((t_data *)exec->content)->args)
-		{
-			i = 0;
-			printf("-----------------args-------------------------\n");
-			while(((t_data *)exec->content)->args[i])
-			{
-					printf("----((t_data *)exec->content)->args[%d]----------->%s\n",i,((t_data *)exec->content)->args[i]);
-				i++;
-			}
-			printf("-----------------args-------------------------\n\n");
-		}
-		i = 0;
-		if(((t_data *)exec->content)->infiles)
-		{
-			printf("-----------------infiles-------------------------\n");
-			while(((t_data *)exec->content)->n_infiles > i)
-			{
-					printf("---((t_data *)exec->content)->infiles[%d]--->%d\n",i,((t_data *)exec->content)->infiles[i]);
-					printf("---((t_data *)exec->content)->inf[%d]--->%s\n",i,((t_data *)exec->content)->inf);
-				i++;
-			}
-			printf("-----------------infiles-------------------------\n\n");
+// 		if(((t_data *)exec->content)->args)
+// 		{
+// 			i = 0;
+// 			printf("-----------------args-------------------------\n");
+// 			while(((t_data *)exec->content)->args[i])
+// 			{
+// 					printf("----((t_data *)exec->content)->args[%d]----------->%s\n",i,((t_data *)exec->content)->args[i]);
+// 				i++;
+// 			}
+// 			printf("-----------------args-------------------------\n\n");
+// 		}
+// 		i = 0;
+// 		if(((t_data *)exec->content)->infiles)
+// 		{
+// 			printf("-----------------infiles-------------------------\n");
+// 			while(((t_data *)exec->content)->n_infiles > i)
+// 			{
+// 					printf("---((t_data *)exec->content)->infiles[%d]--->%d\n",i,((t_data *)exec->content)->infiles[i]);
+// 					printf("---((t_data *)exec->content)->inf[%d]--->%s\n",i,((t_data *)exec->content)->inf);
+// 				i++;
+// 			}
+// 			printf("-----------------infiles-------------------------\n\n");
 				
-		}
-		i = 0;
-		if(((t_data *)exec->content)->outfiles)
-		{
-			printf("-----------------outfiles-------------------------\n");
-			while(((t_data *)exec->content)->outfiles[i])
-			{
-					printf("---((t_data *)exec->content)->outfiles[%d]--->%s\n",i,((t_data *)exec->content)->outfiles[i]);
-				i++;
-			}
-			printf("-----------------outfiles-------------------------\n");
+// 		}
+// 		i = 0;
+// 		if(((t_data *)exec->content)->outfiles)
+// 		{
+// 			printf("-----------------outfiles-------------------------\n");
+// 			while(((t_data *)exec->content)->outfiles[i])
+// 			{
+// 					printf("---((t_data *)exec->content)->outfiles[%d]--->%s\n",i,((t_data *)exec->content)->outfiles[i]);
+// 				i++;
+// 			}
+// 			printf("-----------------outfiles-------------------------\n");
 				
-		}
-		i = 0;
-		if(((t_data *)exec->content)->append)
-		{
-			printf("-----------------append-------------------------\n");
-			while(((t_data *)exec->content)->append[i])
-			{
-					printf("---((t_data *)exec->content)->append[%d]--->%s\n",i,((t_data *)exec->content)->append[i]);
-				i++;
-			}
-			printf("-----------------append-------------------------\n");
+// 		}
+// 		i = 0;
+// 		if(((t_data *)exec->content)->append)
+// 		{
+// 			printf("-----------------append-------------------------\n");
+// 			while(((t_data *)exec->content)->append[i])
+// 			{
+// 					printf("---((t_data *)exec->content)->append[%d]--->%s\n",i,((t_data *)exec->content)->append[i]);
+// 				i++;
+// 			}
+// 			printf("-----------------append-------------------------\n");
 				
-		}
-		i = 0;
-		if(((t_data *)exec->content)->hd)
-		{
-			printf("-----------------hd-------------------------\n");
-			while(((t_data *)exec->content)->hd[i])
-			{
-					printf("---((t_data *)exec->content)->hd[%d]--->%s\n",i,((t_data *)exec->content)->hd[i]);
-				i++;
-			}
-			printf("-----------------hd-------------------------\n");
+// 		}
+// 		i = 0;
+// 		if(((t_data *)exec->content)->hd)
+// 		{
+// 			printf("-----------------hd-------------------------\n");
+// 			while(((t_data *)exec->content)->hd[i])
+// 			{
+// 					printf("---((t_data *)exec->content)->hd[%d]--->%s\n",i,((t_data *)exec->content)->hd[i]);
+// 				i++;
+// 			}
+// 			printf("-----------------hd-------------------------\n");
 				
-		}
-		printf("========================================================================================\n");
-		exec = exec->next;
-	}
-}
+// 		}
+// 		printf("========================================================================================\n");
+// 		exec = exec->next;
+// 	}
+// }
 
 char	*parse_limiter(char *str, int *expand)
 {
@@ -248,13 +248,29 @@ void	here_doc(t_list	*exec)
 	i = -1;
 	while (((t_data *)exec->content)->hd && ((t_data *)exec->content)->hd[++i])
 	{
+		expand = 1;
 		g_glob.signal_heredoc = 1;
 		g_glob.tmpin = dup(0);
-		expand = 1;
-		value = parse_limiter(((t_data *)exec->content)->hd[i], &expand);
-		if (g_glob.breaker == 0)
+		value = ft_strdup("");
+		if (check_qaout(((t_data *)exec->content)->hd[i]))
+		{
+			((t_data *)(exec->content))->if_hd = 1;
+			if (check_qaout(((t_data *)exec->content)->hd[i]) == 1)
+				single_quote(((t_data *)exec->content)->hd[i], &value, 0);
+			else if (check_qaout(((t_data *)exec->content)->hd[i]) == 2)
+				double_quote(exec, ((t_data *)exec->content)->hd[i], &value, 0);
+			expand = 0;
+			((t_data *)(exec->content))->if_hd = 0;
+		}
+		else
+		{
+			free(value);
+			value = ft_strdup(((t_data *)exec->content)->hd[i]);
+		}
+		if (g_glob.stop == 0)
 			open_heredoc(value, expand);
 		free (value);
+		
 		dup2(g_glob.tmpin, 0);
 		close(g_glob.tmpin);
 		g_glob.signal_heredoc = 0;
@@ -283,7 +299,6 @@ int	parse(char *line, char **envp)
 		free_token(token);
 		token = get_next_token(lexer);
 	}
-	// printer(exec);//$"HOME"
 	here_doc(exec);
 	free(lexer);
 	start_exec(exec);

@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 16:50:37 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/18 05:50:11 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/22 17:58:19 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ void	initialiser(void)
 	g_exit_status = 0;
 	g_glob.built = 0;
 	g_glob.g_exp = 0;
+	g_glob.h_flag = 0;
 	g_glob.signal_heredoc = 0;
-	g_glob.breaker = 0;
+	g_glob.stop = 0;
 }
 
 int	main(int ac, char **av, char **envp)

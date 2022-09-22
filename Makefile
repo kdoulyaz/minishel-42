@@ -6,7 +6,7 @@
 #    By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/13 15:56:31 by kdoulyaz          #+#    #+#              #
-#    Updated: 2022/09/19 23:53:02 by kdoulyaz         ###   ########.fr        #
+#    Updated: 2022/09/22 16:37:07 by kdoulyaz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,9 @@ NAME = minishell
 
 SRC = src/minishell.c src/signals.c src/lexer/lexer.c src/lexer/token.c src/lexer/lexer_utils.c src/parce/parce.c\
 		src/parce/expand.c src/parce/expand_utils.c src/parce/qaout.c src/parce/redirections_utils.c src/parce/free.c\
-		src/parce/args.c src/parce/init_struct.c src/parce/pipe.c src/parce/redirections.c src/exec/exec.c \
+		src/parce/args.c src/parce/init_struct.c src/parce/pipe.c src/parce/redirections.c src/exec/exec.c  src/exec/norm.c\
 		src/builtins/builtins.c src/builtins/pwd.c src/builtins/cd.c src/exec/exec_utils.c src/exec/utils.c src/builtins/echo.c\
-		src/builtins/exit.c src/parce/envp.c src/errors_handle/handle_errors.c src/builtins/env.c src/builtins/unset.c\
+		src/builtins/exit.c src/parce/envp.c src/errors_handle/handle_errors.c src/builtins/env.c src/builtins/unset.c src/errors_handle/err1.c\
 		src/builtins/export.c src/parce/utils.c src/builtins/exp_utils1.c src/builtins/exp_utils2.c src/builtins/unset_utils.c\
 		
 		

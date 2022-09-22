@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 03:14:20 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/15 16:25:50 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/22 02:04:28 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	bulitin(t_list *exec)
 {
-	if(!exec)
-		return(0);
+	if (!exec)
+		return (0);
 	if (!((t_data *)exec->content)->args)
 		return (0);
 	if (!ft_strncmp(((t_data *)exec->content)->args[0], "cd", 3))
@@ -35,64 +35,25 @@ int	bulitin(t_list *exec)
 	return (0);
 }
 
-int	execute_bulitings(t_list *exec)
+int	execute_bulitings(t_list *exec, int mode)
 {
 	if (!ft_strncmp(((t_data *)exec->content)->args[0], "cd", 3))
 		return (cd_cmd(((t_data *)exec->content)->args));
-	if (!ft_strncmp(((t_data *)exec->content)->args[0], "pwd", 4))
+	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "pwd", 4))
 		return (pwd_cmd());
 	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "echo", 5))
 		echo_cmd(((t_data *)exec->content)->args);
 	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "env", 4))
 		return (env_cmd(exec));
 	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "export", 7))
-		return(export_cmd(exec));
+		return (export_cmd(exec));
 	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "unset", 6))
 		return (unset_cmd(((t_data *)exec->content)->args));
 	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "exit", 6))
 		return (exit_cmd(((t_data *)exec->content)->args));
-	return (0);
-}
-
-int	child_bulitin(t_list *exec)
-{
-	if(!exec)
-		return(0);
-	if (!((t_data *)exec->content)->args)
+	if (mode == 0)
 		return (0);
-	if (!ft_strncmp(((t_data *)exec->content)->args[0], "cd", 3))
-		return (1);
-	if (!ft_strncmp(((t_data *)exec->content)->args[0], "pwd", 4))
-		return (1);
-	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "echo", 5))
-		return (1);
-	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "env", 4))
-		return (1);
-	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "export", 7))
-		return (1);
-	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "unset", 6))
-		return (1);
-	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "exit", 6))
-		return (1);
-	return (0);
-}
-
-int	child_execute_bulitings(t_list *exec)
-{
-	if (!ft_strncmp(((t_data *)exec->content)->args[0], "cd", 3))
-		return (cd_cmd(((t_data *)exec->content)->args));
-	if (!ft_strncmp(((t_data *)exec->content)->args[0], "pwd", 4))
-		return (pwd_cmd());
-	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "echo", 5))
-		echo_cmd(((t_data *)exec->content)->args);
-	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "env", 4))
-		return (env_cmd(exec));
-	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "export", 7))
-		return(export_cmd(exec));
-	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "unset", 6))
-		return (unset_cmd(((t_data *)exec->content)->args));
-	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "exit", 6))
-		return (exit_cmd(((t_data *)exec->content)->args));
-	g_glob.g_exit_status = 1;
+	else
+		g_glob.g_exit_status = 1;
 	exit(0);
 }

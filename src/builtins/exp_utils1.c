@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 13:00:05 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/08/31 20:19:51 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/21 23:20:32 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	is_variable_exist(char *name)
 	i = -1;
 	while (g_glob.exp[++i])
 	{
-		if (ft_strncmp(g_glob.exp[i], tmp,\
+		if (ft_strncmp(g_glob.exp[i], tmp, \
 				big_len(get_index(g_glob.exp[i], '='), ft_strlen(tmp))) == 0)
 		{
 			free(tmp);

@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 17:15:15 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/05 19:23:16 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/22 17:47:41 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,19 @@ void	error_unset(char *name)
 	ft_putstr_fd(name, 2);
 	ft_putendl_fd("': not a valid identifier", 2);
 	g_glob.g_exit_status = 1;
+}
+
+char	*get_variable_name(char *str)
+{
+	int		i;
+	char	*tmp;
+
+	i = -1;
+	tmp = malloc(sizeof(char) * get_char_index(str, '=') + 1);
+	if (!tmp)
+		return (NULL);
+	while (++i < get_char_index(str, '='))
+		tmp[i] = str[i];
+	tmp[i] = 0;
+	return (tmp);
 }

@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 17:15:41 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/08/21 17:53:21 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/21 19:07:09 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ int	echo_cmd(char **args)
 	i = 0;
 	bool = 0;
 	if (!args[1])
-    {
+	{
 		ft_putstr_fd("\n", 1);
-        return(0);
-    }
+		return (0);
+	}
 	if (check_opt(args[1]) && !args[2])
-		return(0);
+		return (0);
 	while (check_opt(args[++i]))
 		bool++;
 	while (args[i])
@@ -52,5 +52,6 @@ int	echo_cmd(char **args)
 	}
 	if (!bool)
 		ft_putstr_fd("\n", 1);
-	return(0);
+	g_glob.g_exit_status = 0;
+	return (0);
 }

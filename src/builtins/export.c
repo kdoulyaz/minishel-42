@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 14:17:08 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/06 03:49:11 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/22 17:46:47 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	ft_set_export(char *name, char *value, int exist)
 		while (value && g_glob.exp[++j])
 		{
 			if (!ft_strncmp(g_glob.exp[j], tmp,
-					big_len(get_index(g_glob.exp[j], '='), get_index(tmp, '='))))
+					big_len(get_index(g_glob.exp[j], '='), \
+						get_index(tmp, '='))))
 			{
 				free(g_glob.exp[j]);
 				g_glob.exp[j] = ft_strdup(tmp);
@@ -40,24 +41,23 @@ void	ft_set_export(char *name, char *value, int exist)
 
 void	ft_set_env(char *name, char *value)
 {
-	int		i;
 	char	*tmp;
 	char	*tmp2;
 
-    i = -1;
+	g_glob.i = -1;
 	if (!value)
 		return ;
 	tmp = ft_calloc(1, sizeof(char));
 	tmp = ft_join(tmp, name);
 	tmp = ft_join(tmp, "=");
 	tmp = ft_join(tmp, value);
-	while (g_glob.envp[++i])
+	while (g_glob.envp[++g_glob.i])
 	{
-		tmp2 = get_variable_name(g_glob.envp[i]);
+		tmp2 = get_variable_name(g_glob.envp[g_glob.i]);
 		if (!ft_strncmp(tmp2, name, big_len(ft_strlen(tmp2), ft_strlen(name))))
 		{
-			free(g_glob.envp[i]);
-			g_glob.envp[i] = ft_strdup(tmp);
+			free(g_glob.envp[g_glob.i]);
+			g_glob.envp[g_glob.i] = ft_strdup(tmp);
 			free(tmp);
 			free(tmp2);
 			return ;
@@ -67,7 +67,6 @@ void	ft_set_env(char *name, char *value)
 	g_glob.envp = add_env(g_glob.envp, tmp);
 	free(tmp);
 }
-
 
 void	new_environment(t_list *exec)
 {
@@ -101,13 +100,13 @@ void	new_environment(t_list *exec)
 int	export_cmd(t_list *exec)
 {
 	int		len;
-    int     i;
+	int		i;
 
 	i = -1;
-    len = count_args(((t_data *)exec->content)->args);
+	len = count_args(((t_data *)exec->content)->args);
 	if (len == 2)
-        while(g_glob.exp[++i])
-            printf("%s\n", g_glob.exp[i]);
+	while (g_glob.exp[++i])
+		printf("%s\n", g_glob.exp[i]);
 	else
 		new_environment(exec);
     return (0);
