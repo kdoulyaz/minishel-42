@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 16:51:19 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/22 18:00:33 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/25 05:43:11 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ typedef struct s_glob
 	char	**envp;
 	int		built;
 	int		i;
+	int		j;
 	char	**exp;
-	char		*newpwd;
+	char	*newpwd;
 	int		signal_heredoc;
 	int		signalchild;
 	int		stop;
@@ -50,9 +51,14 @@ typedef struct s_glob
 	int		tmpin;
 	int		tmpout;
 	int		end[2];
+	char	*new_path;
 	int		copy_fd;
 	int		input;
 	int		dollar;
+	char	*pwd;
+	int		flag;
+	int		env;
+	char	*old_pwd;
 }				t_glob;
 t_glob			g_glob;
 
@@ -65,7 +71,7 @@ typedef struct s_token
 		R_REDIRECTION = '>',
 		L_REDIRECTION = '<',
 		PIPE = '|',
-	}			type;
+	}			e_type;
 }				t_token;
 
 typedef struct t_lexer
@@ -125,34 +131,31 @@ void	fill_outfile(t_list *exec, t_token *token);
 void	fill_append(t_list *exec, t_token *token);
 int		handle_errors(char *argv);
 int		check_if_expand(char *s);
-void	expand(char *value, char **arg);
-char	*fill_expand(char *value);
+void	expand(t_list *exec, char *value, char **arg);
+char	*fill_expand(t_list *exec, char *value);
 void	expand_split(t_list *exec, char *arg, int f);
 void	qaout_in_redi(t_token *token, t_list *exec, char **arg, int i);
 void	parse_arg_redi(t_token *token, t_list *exec);
 void	free_exec(t_list *exec);
 int		red_error(int *i, int *j, char *argv);
 char	quotes_exist(char *argv, size_t *i);
+void	expand_exit_status(char **tmp, int *i);
+void	utils_expand(t_list *exec, char *value, char **tmp, int *i);
+void	utils2_qaout_in_redi(char **tmp, char **arg, t_list *exec);
+void	utils3_qaout_in_redi(char **tmp, char **arg, t_list *exec);
+void	utils4_qaout_in_redi(char **tmp, char **value);
+void	utils1_qaout(t_list *exec, char **tmp, char **arg);
+int		utils3_position_quote(int j, int *i, int *q, char *tmp);
+void	utils1_position_quote(int f, int *i, int *q, char *tmp);
+int		utils2_position_quote(int j, int *i, int *q, char *tmp);
+int		ft_skip_whitespace(char *av, int *i);
+int		red_error(int *i, int *j, char *argv);
+char	quotes_exist(char *argv, size_t *i);
+int		handle_quotes(char *s);
+int		ft_cmp(char *s, char c);
+void	utils_handle_errors(char *argv, size_t *i, size_t *j);
 
 //-----------------------------------------------------
-// int		bulitin(t_list *exec);
-// void	error_export(char *name);
-// int		pwd_cmd(char **envp);
-// int		execute_bulitings(t_list *exec, char **envp);
-// int		cd_cmd(char **args);
-// void	start_exec(t_list *exec, char **eenv);
-// void	cmd_err(char *cmd);
-// void	path_err(void);
-// char	*find_path(char *cmd, char **env);
-// void	open_out(t_list *exec, int *fdout);
-// int		echo_cmd(char **args);
-// int 	exit_cmd(char **args);
-// int	    count_args(char **args);
-// char    **create_envp(char **envp);
-// int	    count_args(char **args);
-// char	**add_env(char **strs, char *arg);
-// int     env_cmd(t_list *exec);
-// void	init_signal(void);
 
 int		bulitin(t_list *exec);
 int		pwd_cmd(void);
@@ -169,15 +172,15 @@ int		count_args(char **args);
 char	**create_envp(char **envp);
 int		count_args(char **args);
 char	**add_env(char **strs, char *arg);
-int		env_cmd(t_list *exec);
+int		env_cmd(void);
 int		unset_cmd(char **args);
 int		export_cmd(t_list *exec);
 char	**creat_export(char **env);
 char	*ft_join(char *s1, char *s2);
-char	*get_variable_name(char *str);
-int		get_char_index(char *str, char c);
-int		check_error(char *arg);
+char	*g_v_n(char *str);
 int		get_index(char *str, char c);
+int		check_error(char *arg);
+int		g_index(char *str, char c);
 int		big_len(int s1, int s2);
 void	error_export(char *name);
 char	*get_new_line(char *name, char *value);
@@ -202,8 +205,14 @@ void	norm(t_list *exec, int *p, int copy_fd);
 void	ree(t_list *exec);
 int		err_fork(void);
 void	initialise(void);
-void	*ft_getenv(char *str);
+char	*ft_getenv(char *str);
 void	error_msg(char *str, int err);
 void	getcwd_error(int err, char *path);
+int		separator(char c);
+char	*new_v(char *str, int i, int start);
+void	open_heredoc(char *value, int expand);
+int		cd_cmd1(char **args);
+void	cd_err(void);
+void	update_env1(char *old_pwd);
 
 #endif

@@ -6,11 +6,13 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 10:32:24 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/21 19:12:31 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/25 05:20:02 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+int	g_exit_status;
 
 int	count_args(char **args)
 {
@@ -24,7 +26,7 @@ int	count_args(char **args)
 	return (i + 1);
 }
 
-void	num(char **args)
+void	is_numeric(char **args)
 {
 	int	i;
 	int	j;
@@ -60,13 +62,12 @@ int	exit_cmd(char **args)
 		printf("exit\n");
 		exit(g_glob.g_exit_status);
 	}
-	num(args);
+	is_numeric(args);
 	write(2, &len, 4);
 	if (len > 3)
 	{
 		ft_putstr_fd("exit\n", 2);
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		g_glob.g_exit_status = 1;
 	}
 	else if (len == 3)
 	{

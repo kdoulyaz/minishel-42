@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 13:00:05 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/21 23:20:32 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/24 05:20:54 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ char	*get_name(char *str)
 	char	*tmp;
 
 	i = -1;
-	tmp = malloc(sizeof(char) * get_index(str, '=') + 1);
+	tmp = malloc(sizeof(char) * g_index(str, '=') + 1);
 	if (!tmp)
 		return (NULL);
-	while (++i < get_index(str, '='))
+	while (++i < g_index(str, '='))
 		tmp[i] = str[i];
 	tmp[i] = 0;
 	return (tmp);
@@ -53,7 +53,7 @@ int	is_variable_exist(char *name)
 	while (g_glob.exp[++i])
 	{
 		if (ft_strncmp(g_glob.exp[i], tmp, \
-				big_len(get_index(g_glob.exp[i], '='), ft_strlen(tmp))) == 0)
+				big_len(g_index(g_glob.exp[i], '='), ft_strlen(tmp))) == 0)
 		{
 			free(tmp);
 			return (i);

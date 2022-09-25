@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 18:49:56 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/22 02:10:19 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/25 05:37:12 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	start_exec(t_list *exec)
 		if (g_glob.pid == 0)
 		{
 			if (err_inf(exec) == 1)
-				exit(1);
+				exit(g_glob.g_exit_status);
 			child_p(exec, p, g_glob.copy_fd);
 		}
 		close(p[1]);

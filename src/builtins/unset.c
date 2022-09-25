@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 18:09:59 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/22 17:47:35 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/25 05:41:02 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,16 @@ void	unset_env(char *str)
 	i = -1;
 	if (!ft_strncmp(str, "HOME", 4))
 		g_glob.h_flag = 1;
+	else if (!ft_strncmp(str, "PWD", 3))
+	{
+		g_glob.flag = 1;
+		g_glob.pwd = ft_getenv("PWD=");
+	}
+	else if (!ft_strncmp(str, "env", 3))
+		g_glob.env = 1;
 	while (g_glob.envp[++i])
 	{
-		tmp = get_variable_name(g_glob.envp[i]);
+		tmp = g_v_n(g_glob.envp[i]);
 		if (!ft_strncmp(tmp, str, big_len(ft_strlen(tmp), ft_strlen(str))))
 		{
 			g_glob.envp = ft_remove_element(g_glob.envp, i--);
@@ -69,8 +76,8 @@ void	unset_exp(char *str)
 	while (g_glob.exp[++i])
 	{
 		tmp = get_new_line(str, NULL);
-		if (!ft_strncmp(g_glob.exp[i], tmp, \
-		big_len(get_index(g_glob.exp[i], '='), get_index(tmp, '='))))
+		if (!ft_strncmp(g_glob.exp[i], tmp,
+				big_len(ft_strlen(tmp), g_index(g_glob.exp[i], '='))))
 		{
 			g_glob.exp = ft_remove_element(g_glob.exp, i--);
 			free(tmp);

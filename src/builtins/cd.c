@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 05:14:19 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/22 02:19:38 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/25 05:26:45 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,13 @@ void	update_env(char *old_pwd, char *new_path)
 			g_glob.envp[i] = ft_strdup(old_pwd);
 			break ;
 		}
-	}	
-}
-
-int	cd_only(char **args)
-{
-	if (args[1] == NULL || ((args[1][0] == '~') && ft_strlen(args[1]) == 1))
-	{
-		if (g_glob.h_flag == 1 && args[1] == NULL)
-		{
-			write(2, "minishell: cd: HOME not set\n", 28);
-			g_glob.h_flag = 2;
-			return (0);
-		}
-		return (1);
 	}
-	return (0);
+	free(new_path);
+	free(old_pwd);
 }
 
 int	err_cd(char **args, int flag)
-{
+{		
 	if (flag == 1)
 	{
 		write(2, "minishell: cd: ", 15);
@@ -64,32 +51,86 @@ int	err_cd(char **args, int flag)
 	}
 	else
 		write(2, "minishell: cd: HOME not set\n", 28);
-	return (0);
+	return (1);
 }
 
-int	cd_cmd(char **args)
+char	*norm_1(char **args, char *new_path, int mode)
 {
-	char	*new_path;
-	char	*old_pwd;
-
-	new_path = getcwd(NULL, 0);
-	old_pwd = new_path;
-	if (args[1] == NULL || ((args[1][0] == '~') && ft_strlen(args[1]) == 1))
+	if (mode == 0)
 	{
-		if (g_glob.h_flag == 1 && args[1] == NULL)
-			return (err_cd(args, 0));
-		new_path = getenv("HOME");
+		new_path = ft_getenv("HOME=");
+		if (new_path == NULL)
+		{
+			free(new_path);
+			new_path = getenv("HOME");
+		}
 	}
-	else if (args[1][0] == '/')
-		new_path = args[1];
+	else if (mode == 1)
+	{
+		free(new_path);
+		new_path = ft_strdup(args[1]);
+	}
 	else
 	{
 		new_path = ft_strjoin(new_path, "/");
 		new_path = ft_strjoin(new_path, args[1]);
 	}
-	if (chdir(new_path) == -1)
+	return (new_path);
+}
+
+int	cd_cmd(char **args)
+{
+	g_glob.new_path = ft_getenv("PWD=");
+	g_glob.old_pwd = ft_strdup(g_glob.new_path);
+	if (args[1] == NULL || ((args[1][0] == '~') && ft_strlen(args[1]) == 1))
+	{
+		if (g_glob.h_flag == 1 && args[1] == NULL)
+			return (err_cd(args, 0));
+		free(g_glob.new_path);
+		g_glob.new_path = norm_1(args, g_glob.new_path, 0);
+	}
+	else if (args[1][0] == '/')
+		g_glob.new_path = norm_1(args, g_glob.new_path, 1);
+	else
+		g_glob.new_path = norm_1(args, g_glob.new_path, 2);
+	if (chdir(g_glob.new_path) == -1)
+	{
+		if (getcwd(NULL, 0) == NULL)
+			return (cd_err(), free(g_glob.new_path), free(g_glob.old_pwd), 0);
 		err_cd(args, 1);
-	new_path = getcwd(NULL, 0);
-	update_env(old_pwd, new_path);
-	return (0);
+	}
+	if (g_glob.h_flag == 0)
+		free(g_glob.new_path);
+	g_glob.new_path = getcwd(NULL, 0);
+	update_env(g_glob.old_pwd, g_glob.new_path);
+	return (free(g_glob.new_path), free(g_glob.old_pwd), 0);
+}
+
+int	cd_cmd1(char **args)
+{
+	g_glob.new_path = g_glob.pwd;
+	g_glob.old_pwd = ft_strdup(g_glob.new_path);
+	if (args[1] == NULL || ((args[1][0] == '~') && ft_strlen(args[1]) == 1))
+	{
+		if (g_glob.h_flag == 1 && args[1] == NULL)
+			return (err_cd(args, 0));
+		free(g_glob.new_path);
+		g_glob.new_path = norm_1(args, g_glob.new_path, 0);
+	}
+	else if (args[1][0] == '/')
+		g_glob.new_path = norm_1(args, g_glob.new_path, 1);
+	else
+		g_glob.new_path = norm_1(args, g_glob.new_path, 2);
+	if (chdir(g_glob.new_path) == -1)
+	{
+		if (getcwd(NULL, 0) == NULL)
+			return (cd_err(), free(g_glob.new_path), free(g_glob.old_pwd), 0);
+		err_cd(args, 1);
+	}
+	if (g_glob.h_flag == 0)
+		free(g_glob.new_path);
+	g_glob.new_path = getcwd(NULL, 0);
+	update_env1(g_glob.old_pwd);
+	g_glob.pwd = ft_strdup(g_glob.new_path);
+	return (free(g_glob.new_path), free(g_glob.old_pwd), 0);
 }

@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 17:15:15 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/22 17:47:41 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/24 05:23:05 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	check_error(char *arg)
 	return (0);
 }
 
-int	get_char_index(char *str, char c)
+int	get_index(char *str, char c)
 {
 	int	i;
 
@@ -54,16 +54,16 @@ void	error_unset(char *name)
 	g_glob.g_exit_status = 1;
 }
 
-char	*get_variable_name(char *str)
+char	*g_v_n(char *str)
 {
 	int		i;
 	char	*tmp;
 
 	i = -1;
-	tmp = malloc(sizeof(char) * get_char_index(str, '=') + 1);
+	tmp = malloc(sizeof(char) * get_index(str, '=') + 1);
 	if (!tmp)
 		return (NULL);
-	while (++i < get_char_index(str, '='))
+	while (++i < get_index(str, '='))
 		tmp[i] = str[i];
 	tmp[i] = 0;
 	return (tmp);

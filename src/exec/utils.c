@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 16:15:07 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/21 19:59:41 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/25 05:36:13 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,37 @@ void	ft_dup(int fd, int end)
 	close(fd);
 }
 
+// void	waiting(t_list *lst)
+// {
+// 	int	statusl
+// 	dup2(g_glob.tmpin, 0);
+// 	dup2(g_glob.tmpout, 1);
+// 	close(g_glob.tmpin);
+// 	close(g_glob.tmpout);
+// 	while (lst)
+// 	{
+// 		waitpid(-1, &status, NULL);
+// 		lst = lst->next;
+// 	}
+// 	init_signal();
+// }
+
 void	waiting(t_list *lst)
 {
-	dup2(g_glob.tmpin, 0);
-	dup2(g_glob.tmpout, 1);
-	close(g_glob.tmpin);
-	close(g_glob.tmpout);
+	int		status;
+
 	while (lst)
 	{
-		wait(NULL);
+		waitpid(g_glob.pid, &status, 0);
+		if (g_glob.pid != -1)
+		{
+			if (WIFEXITED(status))
+				g_glob.g_exit_status = WEXITSTATUS(status);
+			if (WIFSIGNALED(status))
+				g_glob.g_exit_status = 128 + WTERMSIG(status);
+		}
+		while (wait(NULL) != -1)
+			;
 		lst = lst->next;
 	}
 	init_signal();
@@ -57,6 +79,7 @@ int	err_inf(t_list *exec)
 		write(2, ((t_data *)exec->content)->inf, \
 		ft_strlen(((t_data *)exec->content)->inf));
 		write(2, ": No such file or directory\n", 28);
+		g_glob.g_exit_status = 127;
 		return (1);
 	}
 	return (0);

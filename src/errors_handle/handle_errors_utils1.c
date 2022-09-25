@@ -1,34 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   handle_errors_utils1.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/10 19:19:49 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/25 02:14:13 by kdoulyaz         ###   ########.fr       */
+/*   Created: 2022/09/25 03:05:33 by omeslall          #+#    #+#             */
+/*   Updated: 2022/09/25 05:31:41 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"libft.h"
+#include"../../include/minishell.h"
 
-void	ft_putstr_fd(char *s, int fd)
+void	utils_handle_errors(char *argv, size_t *i, size_t *j)
 {
-	int	i;
-
-	i = 0;
-	if (s)
+	if (argv[*i] == '"' || argv[*i] == 39)
 	{
-		while (s[i])
-		{
-			write(fd, &s[i], 1);
-			i++;
-		}
+		*j = *i + 1;
+		while (argv[*j] != argv[*i])
+			*j += 1;
+		*i = *j;
 	}
 }
 
-void	write_err(char *s1, char *s2)
+void	path_err(void)
 {
-	ft_putstr_fd(s1, 2);
-	ft_putstr_fd(s2, 2);
+	write(2, "path dosn't exist\n", 18);
+	exit(127);
 }

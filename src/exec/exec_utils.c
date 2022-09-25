@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 06:35:04 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/22 16:18:44 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:45:05 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 void	cmd_err(char *cmd)
 {
+	g_glob.g_exit_status = 127;
 	write(STDERR_FILENO, "minishell: ", 11);
 	write(STDERR_FILENO, cmd, ft_strlen(cmd));
-	write(STDERR_FILENO, ": command not found\n", 20);
+	write(STDERR_FILENO, ": Command not found\n", 20);
 }
 
 char	*find_path(char *cmd, char **env)
@@ -44,7 +45,7 @@ char	*find_path(char *cmd, char **env)
 		i++;
 	}
 	cmd_err(cmd);
-	exit(1);
+	exit(g_glob.g_exit_status);
 }
 
 int	err_out(t_list *exec, int mode, int mode1, int i)
@@ -53,7 +54,7 @@ int	err_out(t_list *exec, int mode, int mode1, int i)
 	{
 		if (g_glob.fdout == -1)
 		{
-			if (((t_data *)exec->content)->outfiles)
+			if (((t_data *)exec->content)->outfiles && g_glob.j == 0)
 				error_msg(((t_data *)exec->content)->outfiles[i], errno);
 			else if (((t_data *)exec->content)->append)
 				error_msg(((t_data *)exec->content)->append[i], errno);
@@ -83,6 +84,7 @@ void	open_out(t_list *exec, int i)
 	{
 		if (((t_data *)exec->content)->outfiles)
 		{
+			g_glob.j = 0;
 			while (((t_data *)exec->content)->outfiles[i])
 				g_glob.fdout = open(((t_data *)exec->content)->outfiles[i++],
 						O_WRONLY | O_CREAT | O_TRUNC, 0777);
@@ -92,6 +94,7 @@ void	open_out(t_list *exec, int i)
 		if (((t_data *)exec->content)->append)
 		{
 			i = 0;
+			g_glob.j = 1;
 			while (((t_data *)exec->content)->append[i])
 				g_glob.fdout = open(((t_data *)exec->content)->append[i++],
 						O_WRONLY | O_CREAT | O_APPEND, 0777);

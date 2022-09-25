@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 17:15:41 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/21 19:07:09 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:21:50 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,30 @@ int	echo_cmd(char **args)
 	}
 	if (!bool)
 		ft_putstr_fd("\n", 1);
-	g_glob.g_exit_status = 0;
-	return (0);
+	return (g_glob.g_exit_status);
+}
+
+void	update_env1(char *old_pwd)
+{
+	int	i;
+
+	i = 1;
+	old_pwd = ft_join1(ft_strdup("OLDPWD="), ft_strdup(old_pwd));
+	while (g_glob.envp[++i])
+	{
+		if (!ft_strncmp(g_glob.envp[i], "OLDPWD=", 7))
+		{
+			free(g_glob.envp[i]);
+			g_glob.envp[i] = ft_strdup(old_pwd);
+			free(old_pwd);
+			break ;
+		}
+	}	
+}
+
+void	cd_err(void)
+{
+	write(2, "cd: error retrieving current directory: getcwd:", 47);
+	write(2, " cannot access parent directories: ", 35);
+	write(2, "No such file or directory\n", 26);
 }

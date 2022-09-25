@@ -6,13 +6,13 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 12:54:46 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/06 03:53:00 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/24 19:33:48 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	get_index(char *str, char c)
+int	g_index(char *str, char c)
 {
 	int	i;
 
@@ -37,4 +37,3 @@ void	error_export(char *name)
 	ft_putendl_fd("': not a valid identifier", 2);
 	g_glob.g_exit_status = 1;
 }
-
