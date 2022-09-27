@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 05:14:19 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/25 05:26:45 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/27 19:57:18 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,12 @@ int	cd_cmd(char **args)
 		free(g_glob.new_path);
 	g_glob.new_path = getcwd(NULL, 0);
 	update_env(g_glob.old_pwd, g_glob.new_path);
-	return (free(g_glob.new_path), free(g_glob.old_pwd), 0);
+	return (free(g_glob.new_path), free(g_glob.old_pwd), g_glob.g_exit_status);
 }
 
 int	cd_cmd1(char **args)
 {
-	g_glob.new_path = g_glob.pwd;
+	g_glob.new_path = ft_strdup(g_glob.pwd);
 	g_glob.old_pwd = ft_strdup(g_glob.new_path);
 	if (args[1] == NULL || ((args[1][0] == '~') && ft_strlen(args[1]) == 1))
 	{
@@ -132,5 +132,5 @@ int	cd_cmd1(char **args)
 	g_glob.new_path = getcwd(NULL, 0);
 	update_env1(g_glob.old_pwd);
 	g_glob.pwd = ft_strdup(g_glob.new_path);
-	return (free(g_glob.new_path), free(g_glob.old_pwd), 0);
+	return (free(g_glob.new_path), free(g_glob.old_pwd), g_glob.g_exit_status);
 }

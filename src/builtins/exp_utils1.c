@@ -6,13 +6,13 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 13:00:05 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/24 05:20:54 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/25 17:01:33 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	*get_new_line(char *name, char *value)
+char	*new_line(char *name, char *value)
 {
 	char	*tmp;
 
@@ -43,12 +43,12 @@ char	*get_name(char *str)
 	return (tmp);
 }
 
-int	is_variable_exist(char *name)
+int	is_exist(char *name)
 {
 	int		i;
 	char	*tmp;
 
-	tmp = get_new_line(name, NULL);
+	tmp = new_line(name, NULL);
 	i = -1;
 	while (g_glob.exp[++i])
 	{

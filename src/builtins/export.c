@@ -6,19 +6,19 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 14:17:08 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/24 19:33:53 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/25 17:01:37 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	ft_set_export(char *name, char *value, int exist)
+void	set_export(char *name, char *value, int exist)
 {
 	int		j;
 	char	*tmp;
 
 	j = -1;
-	tmp = get_new_line(name, value);
+	tmp = new_line(name, value);
 	if (exist)
 	{
 		while (value && g_glob.exp[++j])
@@ -47,7 +47,7 @@ char	*join_tmp(char *tmp, char *name, char *value)
 	return (tmp);
 }
 
-void	ft_set_env(char *name, char *value)
+void	set_env(char *name, char *value)
 {
 	int		i;
 	char	*tmp;
@@ -75,32 +75,32 @@ void	ft_set_env(char *name, char *value)
 	free(tmp);
 }
 
-void	new_environment(t_list *exec)
+void	new_env(t_list *exec)
 {
 	int		i;
 	char	**tmp;
-	char	*name;
-	char	*value;
+	char	*nom;
+	char	*val;
 
 	i = 0;
 	tmp = ((t_data *)exec->content)->args;
 	while (tmp[++i])
 	{
-		value = NULL;
-		name = get_name(tmp[i]);
-		if ((!name || !name[0]) || check_error(name))
+		val = NULL;
+		nom = get_name(tmp[i]);
+		if ((!nom || !nom[0]) || check_error(nom))
 		{
-			(error_export(tmp[i]), free(name));
+			(error_export(tmp[i]), free(nom));
 			continue ;
 		}
 		if (ft_strchr(tmp[i], '='))
-			value = ft_strdup(tmp[i] + get_index(tmp[i], '=') + 1);
-		if (is_variable_exist(name) != -1)
-			(ft_set_env(name, value), ft_set_export(name, value, 1));
+			val = ft_strdup(tmp[i] + get_index(tmp[i], '=') + 1);
+		if (is_exist(nom) != -1)
+			(set_env(nom, val), set_export(nom, val, 1));
 		else
-			(ft_set_env(name, value), ft_set_export(name, value, 0));
-		free(name);
-		free(value);
+			(set_env(nom, val), set_export(nom, val, 0));
+		free(nom);
+		free(val);
 	}
 }
 
@@ -115,6 +115,6 @@ int	export_cmd(t_list *exec)
 		while (g_glob.exp[++i])
 			printf("%s\n", g_glob.exp[i]);
 	else
-		new_environment(exec);
+		new_env(exec);
 	return (0);
 }

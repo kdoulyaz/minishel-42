@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 16:50:37 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/25 05:41:45 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:32:47 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	initialiser(void)
 	g_glob.g_exp = 0;
 	g_glob.flag = 0;
 	g_glob.env = 0;
+	g_glob.last = 0;
 	g_glob.signal_heredoc = 0;
 	g_glob.stop = 0;
 }

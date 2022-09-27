@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 01:41:02 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/24 19:25:52 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:32:57 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	handlear(int signal)
 	{
 		g_glob.stop = 1;
 		g_glob.g_exit_status = 1;
+		g_glob.last = 1;
 		ft_putstr_fd("\n", 1);
 		close(0);
 		g_glob.signal_heredoc = 0;

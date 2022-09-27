@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 18:49:56 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/25 05:37:12 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/25 17:20:04 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,5 @@ void	start_exec(t_list *exec)
 		g_glob.copy_fd = p[0];
 		exec = exec->next;
 	}
-	waiting(lst);
+	wait_pids(lst);
 }

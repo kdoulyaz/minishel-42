@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 16:51:19 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/25 05:43:11 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/25 17:01:25 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_glob
 	int		flag;
 	int		env;
 	char	*old_pwd;
+	int		last;
 }				t_glob;
 t_glob			g_glob;
 
@@ -183,9 +184,9 @@ int		check_error(char *arg);
 int		g_index(char *str, char c);
 int		big_len(int s1, int s2);
 void	error_export(char *name);
-char	*get_new_line(char *name, char *value);
+char	*new_line(char *name, char *value);
 char	*get_name(char *str);
-int		is_variable_exist(char *name);
+int		is_exist(char *name);
 int		is_acceptable(char c);
 void	error_unset(char *name);
 void	handlear(int signal);
@@ -193,7 +194,7 @@ void	init_signal(void);
 void	clean_nood(t_list	*exec);
 int		*add_pid(int *pids, int pid);
 void	update_env(char *old_pwd, char *new_path);
-void	waiting(t_list *lst);
+void	wait_pids(t_list *lst);
 void	ft_dup(int fd, int end);
 int		child_bulitin(t_list *exec);
 int		child_execute_bulitings(t_list *exec);

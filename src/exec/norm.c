@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 19:56:19 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/23 23:18:12 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:49:56 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ree(t_list *exec)
 	ft_putstr_fd(((t_data *)exec->content)->args[0], 2);
 	ft_putstr_fd(": ", 2);
 	ft_putendl_fd(strerror(errno), 2);
-	g_glob.g_exit_status = 127;
+	g_glob.g_exit_status = 126;
 }
 
 int	err_fork(void)

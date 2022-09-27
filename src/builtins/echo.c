@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 17:15:41 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/24 20:21:50 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/25 17:10:45 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,5 @@ void	cd_err(void)
 	write(2, "cd: error retrieving current directory: getcwd:", 47);
 	write(2, " cannot access parent directories: ", 35);
 	write(2, "No such file or directory\n", 26);
+	g_glob.g_exit_status = 0;
 }

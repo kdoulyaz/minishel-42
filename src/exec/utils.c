@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 16:15:07 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/25 05:36:13 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:52:58 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,38 +25,24 @@ void	ft_dup(int fd, int end)
 	close(fd);
 }
 
-// void	waiting(t_list *lst)
-// {
-// 	int	statusl
-// 	dup2(g_glob.tmpin, 0);
-// 	dup2(g_glob.tmpout, 1);
-// 	close(g_glob.tmpin);
-// 	close(g_glob.tmpout);
-// 	while (lst)
-// 	{
-// 		waitpid(-1, &status, NULL);
-// 		lst = lst->next;
-// 	}
-// 	init_signal();
-// }
-
-void	waiting(t_list *lst)
+void	wait_pids(t_list *exec)
 {
 	int		status;
 
-	while (lst)
+	while (exec)
 	{
 		waitpid(g_glob.pid, &status, 0);
-		if (g_glob.pid != -1)
+		if (g_glob.pid != -1 && g_glob.last == 0)
 		{
 			if (WIFEXITED(status))
 				g_glob.g_exit_status = WEXITSTATUS(status);
 			if (WIFSIGNALED(status))
 				g_glob.g_exit_status = 128 + WTERMSIG(status);
 		}
+		g_glob.last = 0;
 		while (wait(NULL) != -1)
 			;
-		lst = lst->next;
+		exec = exec->next;
 	}
 	init_signal();
 }

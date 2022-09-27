@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 21:46:55 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/25 02:49:09 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:24:36 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,5 @@ int	parse(char *line, char **envp)
 	free(lexer);
 	start_exec(exec);
 	free_exec(exec);
-	return (0);
+	return (g_glob.g_exit_status);
 }
