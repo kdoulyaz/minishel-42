@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 16:51:19 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/25 17:01:25 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/10/01 03:57:42 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_glob
 	int		i;
 	int		j;
 	char	**exp;
+	int		pwd_flag;
 	char	*newpwd;
 	int		signal_heredoc;
 	int		signalchild;
@@ -52,6 +53,7 @@ typedef struct s_glob
 	int		tmpout;
 	int		end[2];
 	char	*new_path;
+	int		expand;
 	int		copy_fd;
 	int		input;
 	int		dollar;
@@ -60,6 +62,7 @@ typedef struct s_glob
 	int		env;
 	char	*old_pwd;
 	int		last;
+	char	*new_pwd;
 }				t_glob;
 t_glob			g_glob;
 
@@ -155,6 +158,7 @@ char	quotes_exist(char *argv, size_t *i);
 int		handle_quotes(char *s);
 int		ft_cmp(char *s, char c);
 void	utils_handle_errors(char *argv, size_t *i, size_t *j);
+void	skip_in_qaout(char *argv, int *i);
 
 //-----------------------------------------------------
 
@@ -174,6 +178,7 @@ char	**create_envp(char **envp);
 int		count_args(char **args);
 char	**add_env(char **strs, char *arg);
 int		env_cmd(void);
+void	free_loop(char **args);
 int		unset_cmd(char **args);
 int		export_cmd(t_list *exec);
 char	**creat_export(char **env);
@@ -194,7 +199,7 @@ void	init_signal(void);
 void	clean_nood(t_list	*exec);
 int		*add_pid(int *pids, int pid);
 void	update_env(char *old_pwd, char *new_path);
-void	wait_pids(t_list *lst);
+void	wait_pids(t_list *exec, int *p);
 void	ft_dup(int fd, int end);
 int		child_bulitin(t_list *exec);
 int		child_execute_bulitings(t_list *exec);
@@ -215,5 +220,11 @@ void	open_heredoc(char *value, int expand);
 int		cd_cmd1(char **args);
 void	cd_err(void);
 void	update_env1(char *old_pwd);
+void	khwi(char *str);
+char	*norm_1(char **args, char *new_path, int mode);
+void	norm_2(char **args);
+int		err_cd(char **args, int flag);
+void	khwi(char *str);
+int		err_chdir(char **args);
 
 #endif

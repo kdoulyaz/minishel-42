@@ -6,7 +6,7 @@
 /*   By: omeslall <omeslall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 02:10:19 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/25 03:10:17 by omeslall         ###   ########.fr       */
+/*   Updated: 2022/09/29 17:14:23 by omeslall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	handle_pipe(char *argv)
 	j = 0;
 	while (argv[i])
 	{
+		skip_in_qaout(argv, &i);
 		if (argv[i] == '|')
 		{
 			ft_skip_whitespace(argv, &j);

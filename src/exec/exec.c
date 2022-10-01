@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 18:49:56 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/25 17:20:04 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/29 15:42:37 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,7 @@ void	child_p(t_list *exec, int *p, int copy_fd)
 			is_derictory(exec);
 			if (execve(find_path(((t_data *)exec->content)->args[0], \
 			g_glob.envp), ((t_data *)exec->content)->args, g_glob.envp) == -1)
-			{
-				ree(exec);
-				exit(g_glob.g_exit_status);
-			}
+				(ree(exec), exit(g_glob.g_exit_status));
 		}
 		else
 			exit(0);
@@ -113,5 +110,5 @@ void	start_exec(t_list *exec)
 		g_glob.copy_fd = p[0];
 		exec = exec->next;
 	}
-	wait_pids(lst);
+	wait_pids(lst, p);
 }

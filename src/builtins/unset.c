@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 18:09:59 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/25 17:07:13 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/10/01 16:01:56 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,7 @@ void	unset_env(char *str)
 	if (!ft_strncmp(str, "HOME", 4))
 		g_glob.h_flag = 1;
 	else if (!ft_strncmp(str, "PWD", 3))
-	{
 		g_glob.flag = 1;
-		g_glob.pwd = ft_getenv("PWD=");
-	}
 	else if (!ft_strncmp(str, "env", 3))
 		g_glob.env = 1;
 	while (g_glob.envp[++i])

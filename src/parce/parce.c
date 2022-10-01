@@ -6,50 +6,67 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 21:46:55 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/25 16:24:36 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/29 15:55:31 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../../include/minishell.h"
 
-int	norm1(t_list *exec, char **value, int i)
+int	expand_heredoc(t_list *exec, char **value, int i, int mode)
 {
-	((t_data *)(exec->content))->if_hd = 1;
-	if (check_qaout(((t_data *)exec->content)->hd[i]) == 1)
-		single_quote(((t_data *)exec->content)->hd[i], value, 0);
-	else if (check_qaout(((t_data *)exec->content)->hd[i]) == 2)
-		double_quote(exec, ((t_data *)exec->content)->hd[i], value, 0);
-	((t_data *)(exec->content))->if_hd = 0;
+	if (mode == 0)
+	{
+		g_glob.signal_heredoc = 1;
+		((t_data *)(exec->content))->if_hd = 1;
+		if (check_qaout(((t_data *)exec->content)->hd[i]) == 1)
+			single_quote(((t_data *)exec->content)->hd[i], value, 0);
+		else if (check_qaout(((t_data *)exec->content)->hd[i]) == 2)
+			double_quote(exec, ((t_data *)exec->content)->hd[i], value, 0);
+		((t_data *)(exec->content))->if_hd = 0;
+	}
+	else
+	{
+		dup2(g_glob.tmpin, 0);
+		close(g_glob.tmpin);
+	}
 	return (0);
+}
+
+char	*value_herdoc(char *value, t_list *tmp, int i)
+{
+	g_glob.signal_heredoc = 1;
+	free(value);
+	value = ft_strdup(((t_data *)tmp->content)->hd[i]);
+	return (value);
 }
 
 void	here_docc(t_list	*exec)
 {
-	int		expand;
 	char	*value;
 	int		i;
+	t_list	*tmp;
 
-	i = -1;
-	while (((t_data *)exec->content)->hd && ((t_data *)exec->content)->hd[++i])
+	tmp = exec;
+	while (tmp)
 	{
-		expand = 1;
-		g_glob.signal_heredoc = 1;
-		g_glob.tmpin = dup(0);
-		value = ft_strdup("");
-		if (check_qaout(((t_data *)exec->content)->hd[i]))
-			expand = norm1(exec, &value, i);
-		else
+		i = -1;
+		while (((t_data *)tmp->content)->hd
+			&& ((t_data *)tmp->content)->hd[++i])
 		{
-			free(value);
-			value = ft_strdup(((t_data *)exec->content)->hd[i]);
+			g_glob.expand = 1;
+			g_glob.tmpin = dup(0);
+			value = ft_strdup("");
+			if (check_qaout(((t_data *)tmp->content)->hd[i]))
+				g_glob.expand = expand_heredoc(tmp, &value, i, 0);
+			else
+				value = value_herdoc(value, tmp, i);
+			if (g_glob.stop == 0)
+				open_heredoc(value, g_glob.expand);
+			(free(value), expand_heredoc(exec, &value, i, 1));
 		}
-		if (g_glob.stop == 0)
-			open_heredoc(value, expand);
-		free (value);
-		dup2(g_glob.tmpin, 0);
-		close(g_glob.tmpin);
-		g_glob.signal_heredoc = 0;
+		tmp = tmp->next;
 	}
+	g_glob.signal_heredoc = 0;
 }
 
 void	util_token(t_token **token, t_list *exec, char **envp, t_lexer *lexer)

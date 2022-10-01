@@ -6,7 +6,7 @@
 #    By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/13 15:56:31 by kdoulyaz          #+#    #+#              #
-#    Updated: 2022/09/25 05:20:14 by kdoulyaz         ###   ########.fr        #
+#    Updated: 2022/10/02 00:34:58 by kdoulyaz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC = src/minishell.c src/signals.c src/lexer/lexer.c src/lexer/token.c src/lexe
 		src/builtins/builtins.c src/builtins/pwd.c src/builtins/cd.c src/exec/exec_utils.c src/exec/utils.c src/builtins/echo.c src/parce/qaout_utils.c\
 		src/builtins/exit.c src/parce/envp.c src/errors_handle/handle_errors.c src/builtins/env.c src/builtins/unset.c\
 		src/builtins/export.c src/parce/utils.c src/builtins/exp_utils1.c src/builtins/exp_utils2.c src/builtins/unset_utils.c\
-		src/errors_handle/handle_errors_utils.c src/errors_handle/handle_errors_utils1.c\
+		src/errors_handle/handle_errors_utils.c src/errors_handle/handle_errors_utils1.c \
 
 CC = @gcc -g -lreadline #-fsanitize=address
 

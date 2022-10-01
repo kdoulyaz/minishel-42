@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 16:15:07 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/25 16:52:58 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/28 19:00:25 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_dup(int fd, int end)
 	close(fd);
 }
 
-void	wait_pids(t_list *exec)
+void	wait_pids(t_list *exec, int *p)
 {
 	int		status;
 
@@ -44,6 +44,8 @@ void	wait_pids(t_list *exec)
 			;
 		exec = exec->next;
 	}
+	close(p[0]);
+	close(p[1]);
 	init_signal();
 }
 

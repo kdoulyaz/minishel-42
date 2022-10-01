@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 19:56:19 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/25 16:49:56 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/30 20:15:34 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*ft_getenv(char *str)
 	while (g_glob.envp[i] != NULL)
 	{
 		if (ft_strncmp(g_glob.envp[i], str, ft_strlen(str)) == 0)
-			return (ft_strdup(g_glob.envp[i] + ft_strlen(str)));
+			return (g_glob.envp[i] + ft_strlen(str));
 		i++;
 	}
 	return (NULL);

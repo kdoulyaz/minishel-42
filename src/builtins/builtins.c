@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 03:14:20 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/25 17:35:32 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/09/30 03:46:24 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,7 @@ int	bulitin(t_list *exec)
 int	execute_bulitings(t_list *exec, int mode)
 {
 	if (!ft_strncmp(((t_data *)exec->content)->args[0], "cd", 3))
-	{
-		if (g_glob.flag == 1)
-			return (cd_cmd1(((t_data *)exec->content)->args));
 		return (cd_cmd(((t_data *)exec->content)->args));
-	}
 	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "pwd", 4))
 		return (pwd_cmd());
 	else if (!ft_strncmp(((t_data *)exec->content)->args[0], "echo", 5))
