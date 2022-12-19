@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 16:15:07 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/28 19:00:25 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/10/03 16:36:31 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	err_inf(t_list *exec)
 	signal(SIGQUIT, SIG_DFL);
 	if (((t_data *)exec->content)->inf)
 	{
+		open_out1(exec, 0);
 		write(2, "minishell: ", 11);
 		write(2, ((t_data *)exec->content)->inf, \
 		ft_strlen(((t_data *)exec->content)->inf));

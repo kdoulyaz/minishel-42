@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_errors_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omeslall <omeslall@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 02:10:19 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/29 17:14:23 by omeslall         ###   ########.fr       */
+/*   Updated: 2022/10/04 02:39:54 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ int	handle_errors(char *argv)
 		&& (argv[i] == '>' || argv[i] == '<'))
 		{
 			printf("syntax error near unexpected token `newline'\n");
+			g_glob.g_exit_status = 258;
 			return (0);
 		}
 		i++;

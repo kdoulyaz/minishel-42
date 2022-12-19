@@ -6,7 +6,7 @@
 /*   By: omeslall <omeslall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 18:26:37 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/25 02:59:58 by omeslall         ###   ########.fr       */
+/*   Updated: 2022/10/01 22:58:10 by omeslall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,8 @@ int	red_error(int *i, int *j, char *argv)
 		*j += 1;
 		ft_skip_whitespace(argv, i);
 		if (!ft_isalnum(argv[*i]) \
-		|| (argv[*i] == c1 && argv[(*i) - 1] == c2) \
-		|| (argv[*i] == c2 && argv[(*i) - 1] == c1) \
-		|| ((argv[*i] == c1 || argv[*i] == c2) \
-		&& (argv[(*i) + 1] == argv[(*i) + 2])))
+			|| (argv[*i] == c1 && argv[(*i) - 1] == c2)
+			|| (argv[*i] == c2 && argv[(*i) - 1] == c1))
 			error = 1;
 	}
 	return (error);

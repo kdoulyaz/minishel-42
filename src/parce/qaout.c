@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   qaout.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: omeslall <omeslall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:59:02 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/25 01:31:04 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/10/02 22:11:02 by omeslall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,8 @@ int	position_quote(char *s, int f)
 	int			j;
 
 	j = 0;
-	while (s[i])
+	utils1_position_quote(f, &i, &q, &tmp);
+	while (s[i] && f != 1)
 	{
 		if (s[i] == '"' && q == 0)
 			return (utils2_position_quote(j, &i, &q, &tmp));
@@ -119,6 +120,5 @@ int	position_quote(char *s, int f)
 		}
 		i++;
 	}
-	utils1_position_quote(f, &i, &q, &tmp);
 	return (i);
 }

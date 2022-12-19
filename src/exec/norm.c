@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 19:56:19 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/30 20:15:34 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/10/03 22:01:16 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 void	norm(t_list *exec, int *p, int copy_fd)
 {
 	g_glob.fdout = -1;
-	open_out(exec, 0);
 	close(p[0]);
 	if (exec->next)
 		ft_dup(p[1], 1);
+	open_out(exec, 0);
 	if (g_glob.fdout != -1)
 		ft_dup(g_glob.fdout, 1);
 	if (copy_fd != -1)

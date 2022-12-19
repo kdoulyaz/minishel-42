@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 05:14:19 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/10/01 18:02:29 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/10/04 02:42:55 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ char	*cd_home(char *path, char **args)
 {
 	path = ft_getenv("HOME=");
 	if (path == NULL && args[1] == NULL)
+	{
 		write(2, "minishell: cd: HOME not set\n", 28);
+		g_glob.g_exit_status = 1;
+	}
 	else
 		path = getenv("HOME");
 	return (path);

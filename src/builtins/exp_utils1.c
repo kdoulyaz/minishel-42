@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 13:00:05 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/25 17:01:33 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/10/02 17:22:43 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,22 @@ int	is_exist(char *name)
 	}
 	free(tmp);
 	return (-1);
+}
+
+int	g_index(char *str, char c)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		if (str[i] == c)
+			return (i);
+	return (i);
+}
+
+int	big_len(int s1, int s2)
+{
+	if (s1 > s2)
+		return (s1);
+	return (s2);
 }

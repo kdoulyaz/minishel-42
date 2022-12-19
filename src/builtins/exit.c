@@ -6,13 +6,11 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 10:32:24 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/10/02 00:31:12 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/10/04 02:38:32 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-int	g_exit_status;
 
 int	count_args(char **args)
 {
@@ -78,5 +76,5 @@ int	exit_cmd(char **args)
 		else
 			(printf("exit\n"), exit(ft_atoi(args[1])));
 	}
-	return (0);
+	return (1);
 }

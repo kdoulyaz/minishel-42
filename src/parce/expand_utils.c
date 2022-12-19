@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: omeslall <omeslall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 18:24:17 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/25 01:34:57 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/10/02 20:04:42 by omeslall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../../include/minishell.h"
+
+void	utils_expand_split(t_list *exec, char **tmp, int f)
+{
+	int	i;
+
+	i = -1;
+	if (f == 1 && len_2d_array((void *)tmp) != 1)
+	{
+		((t_data *)exec->content)->error = 1;
+		while (tmp[++i])
+			free(tmp[i]);
+		position_quote(" ", 1);
+	}
+	else if (f == 1 && len_2d_array((void *)tmp) == 1)
+	{
+		i = -1;
+		while (tmp[++i])
+			free(tmp[i]);
+	}
+}
 
 void	expand_split(t_list *exec, char *arg, int f)
 {
@@ -20,8 +40,7 @@ void	expand_split(t_list *exec, char *arg, int f)
 
 	i = -1;
 	tmp = ft_split(arg, ' ');
-	if (f == 1 && len_2d_array((void *)tmp) != 1)
-		((t_data *)exec->content)->error = 3;
+	utils_expand_split(exec, tmp, f);
 	while (tmp[++i] && f == 0)
 	{
 		len = len_2d_array((void **)(((t_data *)exec->content)->args));

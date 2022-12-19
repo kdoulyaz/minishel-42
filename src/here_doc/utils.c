@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 00:54:35 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/24 05:23:24 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/10/02 17:21:48 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*exp_dollar(char *str, char **env)
 		if (ft_strncmp(tmp, str, len) == 0)
 		{
 			free(tmp);
-			return (ft_strdup(env[i] + get_index(env[i], '=') + 1));
+			return (ft_strdup(env[i] + g_index(env[i], '=') + 1));
 		}
 		free(tmp);
 	}

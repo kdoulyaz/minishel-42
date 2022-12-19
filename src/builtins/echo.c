@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 17:15:41 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/28 19:48:46 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/10/02 17:02:18 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,36 +53,4 @@ int	echo_cmd(char **args)
 	if (!bool)
 		ft_putstr_fd("\n", 1);
 	return (g_glob.g_exit_status);
-}
-
-void	update_env1(char *old_pwd)
-{
-	int		i;
-	int		j;
-	char	*str;
-
-	i = 1;
-	j = 0;
-	str = ft_join1(ft_strdup("OLDPWD="), ft_strdup(old_pwd));
-	while (g_glob.envp[++i])
-	{
-		if (!ft_strncmp(g_glob.envp[i], "OLDPWD=", 7))
-		{
-			j = 1;
-			free(g_glob.envp[i]);
-			g_glob.envp[i] = ft_strdup(old_pwd);
-			free(str);
-			break ;
-		}
-	}
-	if (j == 0)
-		free(str);
-}
-
-void	cd_err(void)
-{
-	write(2, "cd: error retrieving current directory: getcwd:", 47);
-	write(2, " cannot access parent directories: ", 35);
-	write(2, "No such file or directory\n", 26);
-	g_glob.g_exit_status = 0;
 }

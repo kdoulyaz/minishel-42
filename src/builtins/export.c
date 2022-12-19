@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 14:17:08 by kdoulyaz          #+#    #+#             */
-/*   Updated: 2022/09/25 17:01:37 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/10/02 17:21:34 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	new_env(t_list *exec)
 			continue ;
 		}
 		if (ft_strchr(tmp[i], '='))
-			val = ft_strdup(tmp[i] + get_index(tmp[i], '=') + 1);
+			val = ft_strdup(tmp[i] + g_index(tmp[i], '=') + 1);
 		if (is_exist(nom) != -1)
 			(set_env(nom, val), set_export(nom, val, 1));
 		else

@@ -6,7 +6,7 @@
 /*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 21:46:55 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/29 15:55:31 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/10/03 18:10:20 by kdoulyaz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	here_docc(t_list	*exec)
 			else
 				value = value_herdoc(value, tmp, i);
 			if (g_glob.stop == 0)
-				open_heredoc(value, g_glob.expand);
+				open_heredoc(value, g_glob.expand, tmp);
 			(free(value), expand_heredoc(exec, &value, i, 1));
 		}
 		tmp = tmp->next;

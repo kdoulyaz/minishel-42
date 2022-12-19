@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kdoulyaz <kdoulyaz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: omeslall <omeslall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 00:33:34 by omeslall          #+#    #+#             */
-/*   Updated: 2022/09/25 02:18:53 by kdoulyaz         ###   ########.fr       */
+/*   Updated: 2022/10/02 20:16:33 by omeslall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ void	fill_redirections(t_list *exec, t_token **token, t_lexer *lexer)
 		{
 			free_token(*token);
 			*token = get_next_token(lexer);
-			fill_append(exec, *token);
+			parse_arg_redi(*token, exec);
+			if (((t_data *)exec->content)->error != 1)
+				fill_append(exec, *token);
 		}
 	}
 }
